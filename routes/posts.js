@@ -1,12 +1,13 @@
 const Router = require("express").Router;
 const Post = require("../models").Post;
 const User = require("../models").User;
+const Reply = require("../models").Reply;
 const UserPostVote = require("../models").UserPostVote;
 
 const router = Router();
 
 router.get("/", (req, res) => {
-  Post.findAll({ include: [User] }).then(posts => {
+  Post.findAll({ include: [User, Reply] }).then(posts => {
     res.send(posts);
   });
 });

@@ -1,16 +1,16 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
-  const UserPostVote = sequelize.define(
-    "UserPostVote",
+  const UserReplyVote = sequelize.define(
+    "UserReplyVote",
     {
       userId: DataTypes.INTEGER,
-      postId: DataTypes.INTEGER,
+      replyId: DataTypes.INTEGER,
       isUp: DataTypes.BOOLEAN
     },
     {}
   );
-  UserPostVote.associate = function(models) {
+  UserReplyVote.associate = function(models) {
     // associations can be defined here
   };
-  return UserPostVote;
+  return UserReplyVote;
 };
