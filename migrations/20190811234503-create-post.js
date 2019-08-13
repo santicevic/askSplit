@@ -14,6 +14,12 @@ module.exports = {
       body: {
         type: Sequelize.STRING
       },
+      tag: {
+        type: Sequelize.STRING
+      },
+      update: {
+        type: Sequelize.STRING
+      },
       userId: {
         type: Sequelize.INTEGER
       },

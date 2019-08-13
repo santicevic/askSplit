@@ -1,11 +1,11 @@
 const Router = require("express").Router;
-const users = require("./users");
+const authentication = require("./authentication");
 const posts = require("./posts");
 const replies = require("./replies");
 
 const router = Router();
 
-router.use("/users", users);
+router.use("/authentication", authentication);
 router.use("/posts", posts);
 router.use("/replies", replies);
 

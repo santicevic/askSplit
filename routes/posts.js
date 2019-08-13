@@ -17,7 +17,8 @@ router.post("/", (req, res) => {
     user
       .createPost({
         header: req.body.header,
-        body: req.body.body
+        body: req.body.body,
+        tag: req.body.tag
       })
       .then(post => {
         res.send(post);
