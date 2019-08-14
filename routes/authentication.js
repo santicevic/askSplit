@@ -9,10 +9,14 @@ const saltRounds = 9;
 const router = Router();
 
 router.post("/register", (req, res) => {
+  if (req.body.password.length < 7) {
+    res.status(400).send("Password has to be longer than 6 chars");
+    res.end();
+  }
+
   bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
     User.create({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
+      username: req.body.username,
       email: req.body.email,
       password: hash,
       role: Role.User
