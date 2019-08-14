@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import { login } from "../../store/actions/authActions";
 
 class Login extends Component {
@@ -8,7 +9,8 @@ class Login extends Component {
 
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      invalid: false
     };
   }
 
@@ -16,42 +18,58 @@ class Login extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  handleSubmit = event => {
-    event.preventDefault();
+  handleSubmit = () => {
     const { email, password } = this.state;
     this.props.login(email, password);
+    if (!this.props.loggedIn) {
+      this.setState({ invalid: true });
+    }
   };
 
   render() {
-    const { email, password } = this.state;
-
+    const { email, password, invalid } = this.state;
     return (
-      <form onSubmit={this.handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          placeholder="E-mail"
-          value={email}
-          onChange={this.handleChange}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={password}
-          onChange={this.handleChange}
-        />
-        <button type="submit">Log in</button>
-      </form>
+      <Form style={{ maxWidth: "300px", margin: "20px auto" }}>
+        <FormGroup>
+          <Label for="Email">Email</Label>
+          <Input
+            invalid={invalid && !this.props.loading}
+            type="email"
+            name="email"
+            id="Email"
+            placeholder="E-mail"
+            value={email}
+            onChange={this.handleChange}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label for="Password">Password</Label>
+          <Input
+            invalid={invalid && !this.props.loading}
+            type="password"
+            name="password"
+            id="Password"
+            placeholder="Password"
+            value={password}
+            onChange={this.handleChange}
+          />
+        </FormGroup>
+        <Button onClick={this.handleSubmit}>Submit</Button>
+      </Form>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loggedIn: state.authentication.loggedIn,
+  loading: state.authentication.loading
+});
 
 const mapDispatchToProps = {
   login
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Login);

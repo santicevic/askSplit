@@ -5,6 +5,7 @@ let user = JSON.parse(localStorage.getItem("user"));
 
 let initialState = {
   loggedIn: false,
+  loading: false,
   user: { role: Role.Guest }
 };
 
