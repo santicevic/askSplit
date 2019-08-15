@@ -7,19 +7,20 @@ const verifyAdmin = (req, res, next) => {
   if (typeof bearerHeader !== "undefined") {
     const bearer = bearerHeader.split(" ");
     const token = bearer[1];
-    jwt.verify(token, "secreatkey", (err, authData) => {
+    jwt.verify(token, "key", (err, authData) => {
       if (err) {
-        res.status(403).send();
+        res.status(401).end();
       } else {
         if (authData.user.role === Role.Admin) {
           req.data = authData.user;
           next();
+        } else {
+          res.status(401).end();
         }
-        res.status(403).send();
       }
     });
   } else {
-    res.status(403).send();
+    res.status(401).end();
   }
 };
 
@@ -29,9 +30,9 @@ const verifyUser = (req, res, next) => {
   if (typeof bearerHeader !== "undefined") {
     const bearer = bearerHeader.split(" ");
     const token = bearer[1];
-    jwt.verify(token, "secreatkey", (err, authData) => {
+    jwt.verify(token, "key", (err, authData) => {
       if (err) {
-        res.status(403).send();
+        res.status(401).end();
       } else {
         if (
           authData.user.role === Role.User ||
@@ -39,12 +40,13 @@ const verifyUser = (req, res, next) => {
         ) {
           req.data = authData.user;
           next();
+        } else {
+          res.status(401).end();
         }
-        res.status(403).send();
       }
     });
   } else {
-    res.status(403).send();
+    res.status(401).end();
   }
 };
 

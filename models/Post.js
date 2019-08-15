@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     "Post",
     {
       header: DataTypes.STRING,
-      body: DataTypes.STRING,
+      body: DataTypes.TEXT,
       tag: DataTypes.STRING,
       update: DataTypes.STRING
     },

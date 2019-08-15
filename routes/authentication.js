@@ -1,5 +1,6 @@
 const Router = require("express").Router;
 const bcrypt = require("bcrypt");
+const validator = require("validator");
 const jwt = require("jsonwebtoken");
 const User = require("../models").User;
 const Role = require("../constants/roles");
@@ -49,6 +50,30 @@ router.post("/login", (req, res) => {
       });
     } else {
       res.status(404).send();
+    }
+  });
+});
+
+router.get("/usernameexists/:username", (req, res) => {
+  User.findOne({ where: { username: req.params.username } }).then(user => {
+    if (user) {
+      res.status(200).send({ result: true });
+    } else {
+      res.status(200).send({ result: false });
+    }
+  });
+});
+
+router.get("/emailexists/:email", (req, res) => {
+  // also validates email format
+  if (!validator.isEmail(req.params.email)) {
+    res.status(200).send({ result: true });
+  }
+  User.findOne({ where: { email: req.params.email } }).then(user => {
+    if (user) {
+      res.status(200).send({ result: true });
+    } else {
+      res.status(200).send({ result: false });
     }
   });
 });

@@ -1,0 +1,9 @@
+.Home-post_container {
+  border: solid black 2px;
+  border-radius: 10px;
+}
+
+.Home-post_header {
+  background: #212529;
+  color: #fff;
+}

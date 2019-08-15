@@ -3,17 +3,21 @@ const Post = require("../models").Post;
 const User = require("../models").User;
 const Reply = require("../models").Reply;
 const UserPostVote = require("../models").UserPostVote;
+const authorizationHelper = require("../helpers/authorizationHelper");
 
 const router = Router();
 
 router.get("/", (req, res) => {
-  Post.findAll({ include: [User, Reply] }).then(posts => {
+  Post.findAll({ include: [User] }).then(posts => {
     res.send(posts);
   });
 });
 
-router.post("/", (req, res) => {
-  User.findByPk(req.body.userId).then(user => {
+router.post("/", authorizationHelper.verifyUser, (req, res) => {
+  User.findByPk(req.data.id).then(user => {
+    if (!user) {
+      res.status(401).send();
+    }
     user
       .createPost({
         header: req.body.header,
