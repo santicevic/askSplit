@@ -30,10 +30,8 @@ class Home extends Component {
               </Col>
             </Row>
             <Row className="pt-2 pb-2">
-              <Col xs="9">User: {post.User.username}</Col>
-              <Col sm="3">
-                {moment(post.createdAt).format("HH:mm DD-MMM-YYYY")}
-              </Col>
+              <Col xs="10">User: {post.User.username}</Col>
+              <Col sm="2">{moment(post.createdAt).fromNow()}</Col>
             </Row>
             <Row>
               <Col>

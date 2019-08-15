@@ -24,14 +24,12 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.Post, { foreignKey: "userId" });
     User.hasMany(models.Reply, { foreignKey: "userId" });
     User.belongsToMany(models.Post, {
-      through: "UserPostVotes",
-      as: "posts",
+      through: models.UserPostVote,
       foreignKey: "userId",
       otherKey: "postId"
     });
     User.belongsToMany(models.Reply, {
-      through: "UserReplyVotes",
-      as: "replies",
+      through: models.UserReplyVote,
       foreignKey: "userId",
       otherKey: "replyId"
     });

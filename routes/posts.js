@@ -1,7 +1,7 @@
 const Router = require("express").Router;
 const Post = require("../models").Post;
 const User = require("../models").User;
-const Reply = require("../models").Reply;
+const PostTag = require("../models").PostTag;
 const UserPostVote = require("../models").UserPostVote;
 const authorizationHelper = require("../helpers/authorizationHelper");
 
@@ -25,6 +25,12 @@ router.post("/", authorizationHelper.verifyUser, (req, res) => {
         tag: req.body.tag
       })
       .then(post => {
+        req.body.tags.forEach(tag => {
+          PostTag.create({
+            postId: post.id,
+            tagId: tag.id
+          });
+        });
         res.send(post);
         res.end();
       });
@@ -48,7 +54,6 @@ router.post("/reaction", (req, res) => {
         userPost.isUp = !userPost.isUp;
         userPost.save().then(editedUserPost => {
           res.status(202).send(editedUserPost);
-          res.end();
         });
       }
     } else {
@@ -56,7 +61,6 @@ router.post("/reaction", (req, res) => {
         ...req.body
       }).then(userPostVote => {
         res.status(201).send(userPostVote);
-        res.end();
       });
     }
   });

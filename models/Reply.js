@@ -12,8 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     Reply.belongsTo(models.User, { foreignKey: "userId" });
     Reply.belongsTo(models.Post, { foreignKey: "postId" });
     Reply.belongsToMany(models.User, {
-      through: "UserReplyVotes",
-      as: "replies",
+      through: models.UserReplyVote,
       foreignKey: "replyId",
       otherKey: "userId"
     });

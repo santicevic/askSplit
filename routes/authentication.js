@@ -20,7 +20,7 @@ router.post("/register", (req, res) => {
       username: req.body.username,
       email: req.body.email,
       password: hash,
-      role: Role.User
+      role: Role.Admin
     })
       .then(user => {
         res.status(201).send();

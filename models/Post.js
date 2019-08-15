@@ -3,9 +3,14 @@ module.exports = (sequelize, DataTypes) => {
   const Post = sequelize.define(
     "Post",
     {
-      header: DataTypes.STRING,
-      body: DataTypes.TEXT,
-      tag: DataTypes.STRING,
+      header: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      body: {
+        type: DataTypes.TEXT,
+        allowNull: false
+      },
       update: DataTypes.STRING
     },
     {}
@@ -15,10 +20,14 @@ module.exports = (sequelize, DataTypes) => {
     Post.belongsTo(models.User, { foreignKey: "userId" });
     Post.hasMany(models.Reply, { foreignKey: "postId" });
     Post.belongsToMany(models.User, {
-      through: "UserPostVotes",
-      as: "users",
+      through: models.UserPostVote,
       foreignKey: "postId",
       otherKey: "userId"
+    });
+    Post.belongsToMany(models.Tag, {
+      through: models.PostTag,
+      foreignKey: "postId",
+      otherKey: "tagId"
     });
   };
   return Post;
