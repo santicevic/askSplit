@@ -27,6 +27,7 @@ class Navbar extends React.Component {
     });
   }
   render() {
+    const { role } = this.props.currentUser;
     return (
       <div>
         <NavbarElement color="dark" dark expand="md">
@@ -36,7 +37,12 @@ class Navbar extends React.Component {
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
-              {this.props.currentUser.role === Role.Guest ? (
+              {(role === Role.User || role === Role.Admin) && (
+                <LinkContainer to="/posts">
+                  <NavLink>Add post</NavLink>
+                </LinkContainer>
+              )}
+              {role === Role.Guest ? (
                 <>
                   <LinkContainer to="/authentication/login">
                     <NavLink>Log in</NavLink>

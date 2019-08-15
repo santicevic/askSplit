@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { Alert } from "reactstrap";
 import Authentication from "./components/authentication";
 import Navbar from "./components/Navbar";
+import Posts from "./components/post";
 import PrivateRoute from "./components/utilComponents/PrivateRoute";
 import Role from "./utils/role";
 
@@ -28,6 +29,12 @@ function App(props) {
               user={props.currentUser}
               roles={[Role.Guest]}
               component={Authentication}
+            />
+            <PrivateRoute
+              path="/posts"
+              user={props.currentUser}
+              roles={[Role.User, Role.Admin]}
+              component={Posts}
             />
             <Redirect to="/" />
           </Switch>
