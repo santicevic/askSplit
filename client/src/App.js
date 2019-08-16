@@ -30,12 +30,7 @@ function App(props) {
               roles={[Role.Guest]}
               component={Authentication}
             />
-            <PrivateRoute
-              path="/posts"
-              user={props.currentUser}
-              roles={[Role.User, Role.Admin]}
-              component={Posts}
-            />
+            <Route path="/posts" component={Posts} />
             <Redirect to="/" />
           </Switch>
         </div>

@@ -52,7 +52,7 @@ class Navbar extends React.Component {
                   </LinkContainer>
                 </>
               ) : (
-                <LinkContainer to="/" onClick={this.props.logout}>
+                <LinkContainer to="/logout" onClick={this.props.logout}>
                   <NavLink>Log out</NavLink>
                 </LinkContainer>
               )}

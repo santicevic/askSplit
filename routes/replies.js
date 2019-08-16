@@ -1,6 +1,7 @@
 const Router = require("express").Router;
 const Reply = require("../models").Reply;
 const UserReplyVote = require("../models").UserReplyVote;
+const authorizationHelper = require("../helpers/authorizationHelper");
 
 const router = Router();
 
@@ -14,17 +15,21 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   Reply.create({
     ...req.body
-  }).then(reply => {
-    res.status(201).send(reply);
-    res.end();
-  });
+  })
+    .then(reply => {
+      res.status(201).send(reply);
+      res.end();
+    })
+    .catch(error => {
+      res.status(400).send();
+    });
 });
 
-router.post("/reaction", (req, res) => {
+router.post("/reaction", authorizationHelper.verifyUser, (req, res) => {
   UserReplyVote.findOne({
     where: {
       replyId: req.body.replyId,
-      userId: req.body.userId
+      userId: req.data.id
     }
   }).then(userReply => {
     if (userReply) {

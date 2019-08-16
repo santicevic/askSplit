@@ -20,7 +20,7 @@ router.post("/register", (req, res) => {
       username: req.body.username,
       email: req.body.email,
       password: hash,
-      role: Role.Admin
+      role: Role.User
     })
       .then(user => {
         res.status(201).send();
@@ -41,7 +41,8 @@ router.post("/login", (req, res) => {
           jwt.sign({ user }, "key", { expiresIn: "30 days" }, (err, token) => {
             res.status(200).send({
               token,
-              role: user.role
+              role: user.role,
+              id: user.id
             });
           });
         } else {
