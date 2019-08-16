@@ -1,7 +1,14 @@
 import React, { Component } from "react";
 import "../styles/Home.css";
 import moment from "moment";
-import { Container, Row, Col, Badge } from "reactstrap";
+import {
+  Badge,
+  Card,
+  CardHeader,
+  CardBody,
+  CardTitle,
+  CardText
+} from "reactstrap";
 import { postServices } from "../services/posts";
 
 class Home extends Component {
@@ -22,37 +29,32 @@ class Home extends Component {
   render() {
     return (
       <>
-        {this.state.posts.map(post => (
-          <Container key={post.id} className="Home-post_container mb-3">
-            <Row
-              className="Home-post_header"
-              style={{ cursor: "pointer" }}
-              onClick={() => this.props.history.push(`/posts/${post.id}`)}
-            >
-              <Col xs="6">
-                <h3>{post.header}</h3>
-              </Col>
-              <Col sm="6" className="text-right" style={{ cursor: "pointer" }}>
-                {post.Tags.map(tag => (
-                  <Badge className="m-2" key={tag.id} color="info">
-                    {tag.name}
-                  </Badge>
-                ))}
-              </Col>
-            </Row>
-            <Row className="pt-2 pb-2">
-              <Col xs="9">User: {post.User.username}</Col>
-              <Col sm="3" className="text-right">
-                {moment(post.createdAt).fromNow()}
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <p>{post.body}</p>
-              </Col>
-            </Row>
-          </Container>
-        ))}
+        <div className="home-post_container">
+          {this.state.posts.map(post => (
+            <Card key={post.id} className="home-post_header">
+              <CardHeader
+                onClick={() => this.props.history.push(`/posts/${post.id}`)}
+                style={{ cursor: "pointer" }}
+              >
+                {post.header}
+              </CardHeader>
+              <CardBody>
+                <CardTitle>
+                  <h4>User: {post.User.username}</h4>
+                  <div className="text-right">
+                    {post.Tags.map(tag => (
+                      <Badge className="m-2" key={tag.id} color="info">
+                        {tag.name}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardTitle>
+                <CardText>{post.body}</CardText>
+                <span>{moment(post.createdAt).fromNow()}</span>
+              </CardBody>
+            </Card>
+          ))}
+        </div>
       </>
     );
   }

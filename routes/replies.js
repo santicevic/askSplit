@@ -12,9 +12,11 @@ router.get("/", (req, res) => {
   });
 });
 
-router.post("/", (req, res) => {
+router.post("/", authorizationHelper.verifyUser, (req, res) => {
   Reply.create({
-    ...req.body
+    body: req.body.reply,
+    postId: req.body.postId,
+    userId: req.data.id
   })
     .then(reply => {
       res.status(201).send(reply);

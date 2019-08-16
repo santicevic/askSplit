@@ -14,6 +14,7 @@ import {
 } from "reactstrap";
 import { postServices } from "../../services/posts";
 import moment from "moment";
+import { replyServices } from "../../services/replies";
 
 class Post extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class Post extends Component {
     };
   }
 
-  componentDidMount() {
+  loadPosts = () => {
     postServices
       .getById(this.props.match.params.id, this.props.currentUser.id)
       .then(result => {
@@ -42,6 +43,10 @@ class Post extends Component {
           vote: result.vote
         });
       });
+  };
+
+  componentDidMount() {
+    this.loadPosts();
   }
 
   handleReaction = isUp => {
@@ -59,6 +64,12 @@ class Post extends Component {
           this.setState({ score });
         });
       });
+  };
+
+  handleAddReply = body => {
+    replyServices.add(body, this.state.id).then(() => {
+      this.loadPosts();
+    });
   };
 
   render() {
@@ -131,7 +142,7 @@ class Post extends Component {
           </CardText>
         </CardBody>
         <CardFooter>
-          <PostReply replies={Replies} />
+          <PostReply replies={Replies} onAddReply={this.handleAddReply} />
         </CardFooter>
       </Card>
     );
