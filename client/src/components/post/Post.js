@@ -9,11 +9,10 @@ import {
   CardText,
   CardFooter,
   Badge,
-  Row,
-  Col,
   Button,
   Collapse,
-  Input
+  Input,
+  Spinner
 } from "reactstrap";
 import { postServices } from "../../services/posts";
 import moment from "moment";
@@ -26,15 +25,7 @@ class Post extends Component {
     super(props);
 
     this.state = {
-      Tags: [],
-      User: { username: "" },
-      Replies: [],
-      body: "",
-      createdAt: new Date(),
-      header: "",
-      update: "",
-      score: { upVote: 0, downVote: 0 },
-      vote: null,
+      loading: true,
       isUpdateOpen: false
     };
   }
@@ -44,7 +35,7 @@ class Post extends Component {
       postServices.getById(this.props.match.params.id),
       postServices.getScore(this.props.match.params.id)
     ]).then(result => {
-      this.setState({ ...result[0], score: result[1] });
+      this.setState({ ...result[0], score: result[1], loading: false });
       if (this.props.currentUser.role !== Role.Guest) {
         postServices.getVote(this.props.match.params.id).then(vote => {
           this.setState({ vote });
@@ -107,8 +98,17 @@ class Post extends Component {
       update,
       createdAt,
       score,
-      vote
+      vote,
+      loading
     } = this.state;
+
+    if (loading) {
+      return (
+        <div className="text-center">
+          <Spinner />
+        </div>
+      );
+    }
 
     return (
       <Card>
@@ -126,8 +126,8 @@ class Post extends Component {
           <CardTitle>
             <h5>{User.username}</h5>
           </CardTitle>
-          <Row>
-            <Col xs="1">
+          <div className="d-flex">
+            <div>
               <i
                 className={
                   !vote
@@ -151,11 +151,9 @@ class Post extends Component {
                 style={{ cursor: "pointer" }}
                 onClick={() => this.handleReaction(false)}
               />
-            </Col>
-            <Col xs="11">
-              <CardText>{body}</CardText>
-            </Col>
-          </Row>
+            </div>
+            <CardText className="flex-grow-1 m-3">{body}</CardText>
+          </div>
           <CardText className="text-right">
             {moment(createdAt).fromNow()}
           </CardText>

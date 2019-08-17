@@ -7,7 +7,8 @@ import {
   CardHeader,
   CardBody,
   CardTitle,
-  CardText
+  CardText,
+  Spinner
 } from "reactstrap";
 import { postServices } from "../services/posts";
 
@@ -16,17 +17,26 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      posts: []
+      posts: [],
+      loading: true
     };
   }
 
   componentDidMount() {
     postServices.getAll().then(posts => {
-      this.setState({ posts });
+      this.setState({ posts, loading: false });
     });
   }
 
   render() {
+    if (this.state.loading) {
+      return (
+        <div className="text-center">
+          <Spinner />
+        </div>
+      );
+    }
+
     return (
       <>
         <div className="home-post_container">

@@ -49,7 +49,8 @@ router.post("/reaction", authorizationHelper.verifyUser, (req, res) => {
       }
     } else {
       UserReplyVote.create({
-        ...req.body
+        ...req.body,
+        userId: req.data.id
       }).then(userReplyVote => {
         res.status(201).send(userReplyVote);
         res.end();
