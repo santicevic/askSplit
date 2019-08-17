@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PostReply from "./PostReply";
+import RepliesComponent from "../reply/Replies";
 import {
   Card,
   CardHeader,
@@ -19,6 +19,7 @@ import { postServices } from "../../services/posts";
 import moment from "moment";
 import { replyServices } from "../../services/replies";
 import { showMessage } from "../../store/actions/messageActions";
+import Role from "../../utils/role";
 
 class Post extends Component {
   constructor(props) {
@@ -41,10 +42,14 @@ class Post extends Component {
   loadPosts = () => {
     Promise.all([
       postServices.getById(this.props.match.params.id),
-      postServices.getScore(this.props.match.params.id),
-      postServices.getVote(this.props.match.params.id)
+      postServices.getScore(this.props.match.params.id)
     ]).then(result => {
-      this.setState({ ...result[0], score: result[1], vote: result[2] });
+      this.setState({ ...result[0], score: result[1] });
+      if (this.props.currentUser.role !== Role.Guest) {
+        postServices.getVote(this.props.match.params.id).then(vote => {
+          this.setState({ vote });
+        });
+      }
     });
   };
 
@@ -60,11 +65,7 @@ class Post extends Component {
     postServices
       .reaction(this.props.match.params.id, isUp)
       .then(vote => {
-        if (vote) {
-          this.setState({ vote });
-        } else {
-          this.setState({ vote: null });
-        }
+        this.setState({ vote });
       })
       .then(() => {
         postServices.getScore(this.props.match.params.id).then(score => {
@@ -180,7 +181,10 @@ class Post extends Component {
           </div>
         </CardBody>
         <CardFooter>
-          <PostReply replies={Replies} onAddReply={this.handleAddReply} />
+          <RepliesComponent
+            replies={Replies}
+            onAddReply={this.handleAddReply}
+          />
         </CardFooter>
       </Card>
     );

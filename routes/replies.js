@@ -58,24 +58,37 @@ router.post("/reaction", authorizationHelper.verifyUser, (req, res) => {
   });
 });
 
-router.get("/score/:id", async (req, res) => {
-  const [upVotes, downVotes] = await Promise.all([
+router.get("/votes/:replyId", authorizationHelper.verifyUser, (req, res) => {
+  UserReplyVote.findOne({
+    where: { userId: req.data.id, replyId: req.params.replyId }
+  })
+    .then(vote => {
+      res.status(200).send(vote);
+    })
+    .catch(error => res.status(400).send());
+});
+
+router.get("/scores/:replyId", async (req, res) => {
+  Promise.all([
     UserReplyVote.count({
       where: {
-        replyId: req.params.id,
+        replyId: req.params.replyId,
         isUp: true
       }
     }),
     UserReplyVote.count({
       where: {
-        replyId: req.params.id,
+        replyId: req.params.replyId,
         isUp: false
       }
     })
-  ]);
-
-  res.send({ upVotes, downVotes });
-  res.end();
+  ])
+    .then(votes => {
+      res.status(200).send({ upVote: votes[0], downVote: votes[1] });
+    })
+    .catch(error => {
+      res.status(400).send();
+    });
 });
 
 module.exports = router;

@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { Card, CardBody, CardText, Button, Collapse, Input } from "reactstrap";
-import moment from "moment";
+import { Button, Collapse, Input } from "reactstrap";
+import Reply from "./Reply";
 import { connect } from "react-redux";
 import Role from "../../utils/role";
 import { showMessage } from "../../store/actions/messageActions";
 
-class PostReply extends Component {
+class Replies extends Component {
   constructor(props) {
     super(props);
 
@@ -40,17 +40,10 @@ class PostReply extends Component {
   };
 
   render() {
-    console.log(this.props.replies);
     return (
       <>
         {this.props.replies.map(reply => (
-          <Card key={reply.id} className="m-2 p-2">
-            <h5>{reply.User.username}</h5>
-            <CardBody>{reply.body}</CardBody>
-            <CardText className="text-right">
-              {moment(reply.createdAt).fromNow()}
-            </CardText>
-          </Card>
+          <Reply key={reply.id} reply={reply} />
         ))}
         <Collapse isOpen={this.state.isOpen}>
           <Input
@@ -81,4 +74,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PostReply);
+)(Replies);
