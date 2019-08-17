@@ -37,12 +37,12 @@ export function authentication(state = initialState, action) {
       return {
         loggedIn: false,
         loading: false,
-        user: { role: "Guest" }
+        user: { role: "Guest", id: 0 }
       };
     case authConstants.LOGOUT:
       return {
         loggedIn: false,
-        user: { role: "Guest" }
+        user: { role: "Guest", id: 0 }
       };
     default:
       return state;

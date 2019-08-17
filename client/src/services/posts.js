@@ -5,8 +5,10 @@ export const postServices = {
   getAll,
   getById,
   add,
+  update,
   reaction,
-  getScore
+  getScore,
+  getVote
 };
 
 function getAll() {
@@ -22,16 +24,13 @@ function getAll() {
     });
 }
 
-function getById(postId, userId) {
+function getById(postId) {
   const requestOptions = {
     method: "GET",
     headers: { "Content-Type": "application/json" }
   };
 
-  return fetch(
-    "http://localhost:8000/api/posts/" + postId + "/" + userId,
-    requestOptions
-  )
+  return fetch("http://localhost:8000/api/posts/" + postId, requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;
@@ -46,6 +45,36 @@ function add(post) {
   };
 
   return fetch("http://localhost:8000/api/posts", requestOptions)
+    .then(handleResponse)
+    .catch(error => {
+      throw error;
+    });
+}
+
+function update(post) {
+  const requestOptions = {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...authHeader() },
+    body: JSON.stringify(post)
+  };
+
+  return fetch("http://localhost:8000/api/posts/", requestOptions)
+    .then(handleResponse)
+    .catch(error => {
+      throw error;
+    });
+}
+
+function getVote(postId) {
+  const requestOptions = {
+    method: "GET",
+    headers: { "Content-Type": "application/json", ...authHeader() }
+  };
+
+  return fetch(
+    "http://localhost:8000/api/posts/votes/" + postId,
+    requestOptions
+  )
     .then(handleResponse)
     .catch(error => {
       throw error;
@@ -73,7 +102,7 @@ function getScore(postId) {
   };
 
   return fetch(
-    "http://localhost:8000/api/posts/score/" + postId,
+    "http://localhost:8000/api/posts/scores/" + postId,
     requestOptions
   )
     .then(handleResponse)

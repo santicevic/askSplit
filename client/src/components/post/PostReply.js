@@ -1,14 +1,9 @@
 import React, { Component } from "react";
-import {
-  Card,
-  CardTitle,
-  CardBody,
-  CardText,
-  Button,
-  Collapse,
-  Input
-} from "reactstrap";
+import { Card, CardBody, CardText, Button, Collapse, Input } from "reactstrap";
 import moment from "moment";
+import { connect } from "react-redux";
+import Role from "../../utils/role";
+import { showMessage } from "../../store/actions/messageActions";
 
 class PostReply extends Component {
   constructor(props) {
@@ -25,6 +20,14 @@ class PostReply extends Component {
   };
 
   handleClick = event => {
+    if (this.props.currentUser.role === Role.Guest) {
+      this.props.showMessage(
+        "You have to be logged in to leave a reply",
+        "red"
+      );
+      return;
+    }
+
     if (!this.state.isOpen) {
       this.setState({ isOpen: true });
       return;
@@ -32,15 +35,17 @@ class PostReply extends Component {
 
     if (this.state.reply.length > 0) {
       this.props.onAddReply(this.state.reply);
+      this.setState({ isOpen: false, reply: "" });
     }
   };
 
   render() {
+    console.log(this.props.replies);
     return (
       <>
         {this.props.replies.map(reply => (
-          <Card key={reply.id} className="m-2">
-            <CardTitle>{reply.User.username}</CardTitle>
+          <Card key={reply.id} className="m-2 p-2">
+            <h5>{reply.User.username}</h5>
             <CardBody>{reply.body}</CardBody>
             <CardText className="text-right">
               {moment(reply.createdAt).fromNow()}
@@ -65,4 +70,15 @@ class PostReply extends Component {
   }
 }
 
-export default PostReply;
+const mapStateToProps = state => ({
+  currentUser: state.authentication.user
+});
+
+const mapDispatchToProps = {
+  showMessage
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PostReply);

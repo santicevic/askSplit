@@ -10,7 +10,8 @@ export function message(state = initialState, action) {
     case messageConstants.MESSAGE_SHOW:
       return {
         show: true,
-        msg: action.msg
+        msg: action.msg,
+        color: action.color
       };
     case messageConstants.MESSAGE_HIDE:
       return {

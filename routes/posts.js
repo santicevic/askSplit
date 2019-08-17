@@ -17,26 +17,45 @@ router.get("/", (req, res) => {
     .catch(error => res.status(400).send());
 });
 
-router.get("/score/:postId", (req, res) => {
-  getScore(req.params.postId).then(score => {
-    res.status(200).send({ upVote: score[0], downVote: score[1] });
-  });
+router.get("/votes/:postId", authorizationHelper.verifyUser, (req, res) => {
+  UserPostVote.findOne({
+    where: { userId: req.data.id, postId: req.params.postId }
+  })
+    .then(vote => {
+      res.status(200).send(vote);
+    })
+    .catch(error => res.status(400).send());
 });
 
-router.get("/:postId/:userId", (req, res) => {
+router.get("/scores/:postId", (req, res) => {
+  Promise.all([
+    UserPostVote.count({
+      where: {
+        postId: req.params.postId,
+        isUp: true
+      }
+    }),
+    UserPostVote.count({
+      where: {
+        postId: req.params.postId,
+        isUp: false
+      }
+    })
+  ])
+    .then(votes => {
+      res.status(200).send({ upVote: votes[0], downVote: votes[1] });
+    })
+    .catch(error => {
+      res.status(400).send();
+    });
+});
+
+router.get("/:postId", (req, res) => {
   Post.findByPk(req.params.postId, {
     include: [Tag, User, { model: Reply, include: User }]
   })
     .then(post => {
-      getScore(post.id).then(scores => {
-        getVote(req.params.userId, req.params.postId).then(vote => {
-          res.status(200).send({
-            post,
-            score: { upVote: scores[0], downVote: scores[1] },
-            vote
-          });
-        });
-      });
+      res.status(200).send(post);
     })
     .catch(error => res.status(400).send());
 });
@@ -71,6 +90,24 @@ router.post("/", authorizationHelper.verifyUser, (req, res) => {
   });
 });
 
+router.patch("/", authorizationHelper.verifyUser, (req, res) => {
+  if (req.body.User.id !== req.data.id) {
+    res.status(401).send();
+    return;
+  }
+
+  Post.update(
+    { update: req.body.update },
+    { where: { id: req.body.id }, returning: true }
+  )
+    .then(response => {
+      res.status(202).send(response[1][0]);
+    })
+    .catch(error => {
+      res.status(400).send();
+    });
+});
+
 router.post("/reaction", authorizationHelper.verifyUser, (req, res) => {
   UserPostVote.findOne({
     where: {
@@ -100,26 +137,5 @@ router.post("/reaction", authorizationHelper.verifyUser, (req, res) => {
     }
   });
 });
-
-function getVote(userId, postId) {
-  return UserPostVote.findOne({ where: { userId, postId } });
-}
-
-function getScore(postId) {
-  return Promise.all([
-    UserPostVote.count({
-      where: {
-        postId,
-        isUp: true
-      }
-    }),
-    UserPostVote.count({
-      where: {
-        postId,
-        isUp: false
-      }
-    })
-  ]);
-}
 
 module.exports = router;

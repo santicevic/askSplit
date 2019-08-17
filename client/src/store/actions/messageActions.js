@@ -1,14 +1,15 @@
 import { messageConstants } from "../constants/messageConstants";
 
-export const showMessage = (message, duration = 3000) => {
-  return dispatch => {
-    dispatch(messageShow(message));
+export const showMessage = (message, color = "#99ffad") => {
+  const MESSAGE_DURATION = 3000;
 
-    setTimeout(() => dispatch(messageHide()), duration);
+  return dispatch => {
+    dispatch(messageShow(message, color));
+    setTimeout(() => dispatch(messageHide()), MESSAGE_DURATION);
   };
 
-  function messageShow(message) {
-    return { type: messageConstants.MESSAGE_SHOW, msg: message };
+  function messageShow(message, color) {
+    return { type: messageConstants.MESSAGE_SHOW, msg: message, color };
   }
   function messageHide() {
     return { type: messageConstants.MESSAGE_HIDE };

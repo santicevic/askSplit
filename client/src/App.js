@@ -16,7 +16,11 @@ function App(props) {
     <>
       <BrowserRouter>
         {props.message.show && (
-          <Alert in={true} className="alert-div">
+          <Alert
+            in={true}
+            className="alert-div"
+            style={{ background: props.message.color }}
+          >
             {props.message.msg}
           </Alert>
         )}

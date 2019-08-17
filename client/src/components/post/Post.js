@@ -10,11 +10,15 @@ import {
   CardFooter,
   Badge,
   Row,
-  Col
+  Col,
+  Button,
+  Collapse,
+  Input
 } from "reactstrap";
 import { postServices } from "../../services/posts";
 import moment from "moment";
 import { replyServices } from "../../services/replies";
+import { showMessage } from "../../store/actions/messageActions";
 
 class Post extends Component {
   constructor(props) {
@@ -29,25 +33,28 @@ class Post extends Component {
       header: "",
       update: "",
       score: { upVote: 0, downVote: 0 },
-      vote: null
+      vote: null,
+      isUpdateOpen: false
     };
   }
 
   loadPosts = () => {
-    postServices
-      .getById(this.props.match.params.id, this.props.currentUser.id)
-      .then(result => {
-        this.setState({
-          ...result.post,
-          score: result.score,
-          vote: result.vote
-        });
-      });
+    Promise.all([
+      postServices.getById(this.props.match.params.id),
+      postServices.getScore(this.props.match.params.id),
+      postServices.getVote(this.props.match.params.id)
+    ]).then(result => {
+      this.setState({ ...result[0], score: result[1], vote: result[2] });
+    });
   };
 
   componentDidMount() {
     this.loadPosts();
   }
+
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
 
   handleReaction = isUp => {
     postServices
@@ -63,6 +70,9 @@ class Post extends Component {
         postServices.getScore(this.props.match.params.id).then(score => {
           this.setState({ score });
         });
+      })
+      .catch(error => {
+        this.props.showMessage("Log in to leave a reaction", "red");
       });
   };
 
@@ -70,6 +80,20 @@ class Post extends Component {
     replyServices.add(body, this.state.id).then(() => {
       this.loadPosts();
     });
+  };
+
+  handleUpdate = () => {
+    if (!this.state.isUpdateOpen || !this.state.update) {
+      this.setState({ isUpdateOpen: true });
+      return;
+    }
+
+    postServices
+      .update({ ...this.state, id: this.props.match.params.id })
+      .then(response => {
+        this.setState({ update: response.update, isUpdateOpen: false });
+        this.props.showMessage("Update successful");
+      });
   };
 
   render() {
@@ -91,13 +115,16 @@ class Post extends Component {
           {header}
           <span style={{ float: "right" }}>
             {Tags.map(tag => (
-              <Badge key={tag.id} color="info">
+              <Badge key={tag.id} className="ml-1" color="info">
                 {tag.name}
               </Badge>
             ))}
           </span>
         </CardHeader>
         <CardBody>
+          <CardTitle>
+            <h5>{User.username}</h5>
+          </CardTitle>
           <Row>
             <Col xs="1">
               <i
@@ -125,21 +152,32 @@ class Post extends Component {
               />
             </Col>
             <Col xs="11">
-              <CardTitle>{User.username}</CardTitle>
-              <CardText>
-                {body}
-                {update && (
-                  <>
-                    UPDATE: {update}
-                    <br />
-                  </>
-                )}
-              </CardText>
+              <CardText>{body}</CardText>
             </Col>
           </Row>
           <CardText className="text-right">
             {moment(createdAt).fromNow()}
           </CardText>
+          <div className="text-right">
+            <CardText className="float-left">
+              {update && !this.state.isUpdateOpen && <>UPDATE: {update}</>}
+            </CardText>
+            {User.id === this.props.currentUser.id && (
+              <>
+                <Button onClick={this.handleUpdate}>Update</Button>
+                <Collapse isOpen={this.state.isUpdateOpen}>
+                  <Input
+                    type="textarea"
+                    value={this.state.update || ""}
+                    name="update"
+                    id="Update"
+                    placeholder="Write update!"
+                    onChange={this.handleChange}
+                  />
+                </Collapse>
+              </>
+            )}
+          </div>
         </CardBody>
         <CardFooter>
           <PostReply replies={Replies} onAddReply={this.handleAddReply} />
@@ -153,4 +191,11 @@ const mapStateToProps = state => ({
   currentUser: state.authentication.user
 });
 
-export default connect(mapStateToProps)(Post);
+const mapDispatchToProps = {
+  showMessage
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Post);

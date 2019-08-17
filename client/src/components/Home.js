@@ -43,7 +43,7 @@ class Home extends Component {
                   <h4>User: {post.User.username}</h4>
                   <div className="text-right">
                     {post.Tags.map(tag => (
-                      <Badge className="m-2" key={tag.id} color="info">
+                      <Badge className="ml-1" key={tag.id} color="info">
                         {tag.name}
                       </Badge>
                     ))}
