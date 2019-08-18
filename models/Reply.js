@@ -3,7 +3,11 @@ module.exports = (sequelize, DataTypes) => {
   const Reply = sequelize.define(
     "Reply",
     {
-      body: DataTypes.STRING
+      body: DataTypes.STRING,
+      score: {
+        type: DataTypes.INTEGER,
+        default: 0
+      }
     },
     {}
   );

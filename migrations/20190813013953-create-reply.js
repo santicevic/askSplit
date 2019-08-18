@@ -15,6 +15,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
+      score: {
+        type: Sequelize.INTEGER,
+        default: 0
+      },
       userId: {
         allowNull: false,
         type: Sequelize.INTEGER

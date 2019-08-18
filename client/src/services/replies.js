@@ -3,8 +3,8 @@ import { authHeader } from "../utils/authHeader";
 
 export const replyServices = {
   post,
-  getScore,
-  postVote
+  postVote,
+  getById
 };
 
 function post(reply, postId) {
@@ -35,16 +35,13 @@ function postVote(replyId, isUp) {
     });
 }
 
-function getScore(replyId) {
+function getById(replyId) {
   const requestOptions = {
     method: "GET",
     headers: { "Content-Type": "application/json" }
   };
 
-  return fetch(
-    "http://localhost:8000/api/replies/scores/" + replyId,
-    requestOptions
-  )
+  return fetch("http://localhost:8000/api/replies/" + replyId, requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;

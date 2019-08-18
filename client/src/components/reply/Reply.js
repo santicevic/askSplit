@@ -9,21 +9,18 @@ class Reply extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { loading: true };
+    this.state = {
+      loading: true
+    };
   }
 
   componentDidMount() {
-    replyServices.getScore(this.props.reply.id).then(score => {
-      this.setState({ score, loading: false });
-    });
-
     const currentUserVote = this.props.reply.ReplyVotes.find(
       vote => vote.userId === this.props.currentUser.id
     );
 
     const voteIsUp = currentUserVote ? currentUserVote.isUp : null;
-
-    this.setState({ voteIsUp });
+    this.setState({ voteIsUp, reply: this.props.reply, loading: false });
   }
 
   handleReaction = isUp => {
@@ -33,8 +30,8 @@ class Reply extends Component {
         this.setState({ voteIsUp: vote.isUp });
       })
       .then(() => {
-        replyServices.getScore(this.props.reply.id).then(score => {
-          this.setState({ score });
+        replyServices.getById(this.props.reply.id).then(reply => {
+          this.setState({ reply });
         });
       })
       .catch(error => {
@@ -43,12 +40,11 @@ class Reply extends Component {
   };
 
   render() {
-    const { voteIsUp, score, loading } = this.state;
-    const { reply } = this.props;
-
-    if (loading) {
+    if (this.state.loading) {
       return <></>;
     }
+
+    const { voteIsUp, reply } = this.state;
 
     return (
       <Card className="m-2 p-2">
@@ -64,7 +60,7 @@ class Reply extends Component {
               style={{ cursor: "pointer" }}
               onClick={() => this.handleReaction(true)}
             />
-            <div>{score.upVote - score.downVote}</div>
+            <div>{reply.score}</div>
             <i
               className={
                 voteIsUp
