@@ -17,7 +17,6 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      posts: [],
       loading: true
     };
   }
@@ -50,17 +49,20 @@ class Home extends Component {
               </CardHeader>
               <CardBody>
                 <CardTitle>
-                  <h4>User: {post.User.username}</h4>
-                  <div className="text-right">
-                    {post.Tags.map(tag => (
-                      <Badge className="ml-1" key={tag.id} color="info">
-                        {tag.name}
-                      </Badge>
-                    ))}
-                  </div>
+                  <h4 className="d-inline">User: {post.User.username}</h4>
+                  {post.Tags.map(tag => (
+                    <Badge
+                      className="ml-1 float-right"
+                      key={tag.id}
+                      color="info"
+                    >
+                      {tag.name}
+                    </Badge>
+                  ))}
                 </CardTitle>
                 <CardText>{post.body}</CardText>
                 <span>{moment(post.createdAt).fromNow()}</span>
+                <span className="float-right">{post.score}</span>
               </CardBody>
             </Card>
           ))}

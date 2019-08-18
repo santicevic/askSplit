@@ -3,7 +3,6 @@ import { replyServices } from "../../services/replies";
 import { connect } from "react-redux";
 import moment from "moment";
 import { Card, CardBody, CardText } from "reactstrap";
-import Role from "../../utils/role";
 import { showMessage } from "../../store/actions/messageActions";
 
 class Reply extends Component {
@@ -16,19 +15,22 @@ class Reply extends Component {
   componentDidMount() {
     replyServices.getScore(this.props.reply.id).then(score => {
       this.setState({ score, loading: false });
-      if (this.props.currentUser.role !== Role.Guest) {
-        replyServices.getVote(this.props.reply.id).then(vote => {
-          this.setState({ vote });
-        });
-      }
     });
+
+    const currentUserVote = this.props.reply.ReplyVotes.find(
+      vote => vote.userId === this.props.currentUser.id
+    );
+
+    const voteIsUp = currentUserVote ? currentUserVote.isUp : null;
+
+    this.setState({ voteIsUp });
   }
 
   handleReaction = isUp => {
     replyServices
-      .reaction(this.props.reply.id, isUp)
+      .postVote(this.props.reply.id, isUp)
       .then(vote => {
-        this.setState({ vote });
+        this.setState({ voteIsUp: vote.isUp });
       })
       .then(() => {
         replyServices.getScore(this.props.reply.id).then(score => {
@@ -41,7 +43,7 @@ class Reply extends Component {
   };
 
   render() {
-    const { vote, score, loading } = this.state;
+    const { voteIsUp, score, loading } = this.state;
     const { reply } = this.props;
 
     if (loading) {
@@ -55,9 +57,7 @@ class Reply extends Component {
           <div>
             <i
               className={
-                !vote
-                  ? "far fa-arrow-alt-circle-up"
-                  : vote.isUp
+                voteIsUp
                   ? "fas fa-arrow-alt-circle-up"
                   : "far fa-arrow-alt-circle-up"
               }
@@ -67,11 +67,11 @@ class Reply extends Component {
             <div>{score.upVote - score.downVote}</div>
             <i
               className={
-                !vote
+                voteIsUp
                   ? "far fa-arrow-alt-circle-down"
-                  : vote.isUp
-                  ? "far fa-arrow-alt-circle-down"
-                  : "fas fa-arrow-alt-circle-down"
+                  : voteIsUp === false
+                  ? "fas fa-arrow-alt-circle-down"
+                  : "far fa-arrow-alt-circle-down"
               }
               style={{ cursor: "pointer" }}
               onClick={() => this.handleReaction(false)}

@@ -12,7 +12,7 @@ const router = Router();
 router.post("/register", (req, res) => {
   if (req.body.password.length < 7) {
     res.status(400).send("Password has to be longer than 6 chars");
-    res.end();
+    return;
   }
 
   bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
@@ -20,7 +20,7 @@ router.post("/register", (req, res) => {
       username: req.body.username,
       email: req.body.email,
       password: hash,
-      role: Role.User
+      role: Role.Admin
     })
       .then(user => {
         res.status(201).send();

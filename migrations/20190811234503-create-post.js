@@ -16,6 +16,10 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false
       },
+      score: {
+        type: Sequelize.INTEGER,
+        default: 0
+      },
       update: {
         type: Sequelize.STRING
       },

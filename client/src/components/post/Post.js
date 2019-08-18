@@ -18,7 +18,6 @@ import { postServices } from "../../services/posts";
 import moment from "moment";
 import { replyServices } from "../../services/replies";
 import { showMessage } from "../../store/actions/messageActions";
-import Role from "../../utils/role";
 
 class Post extends Component {
   constructor(props) {
@@ -31,16 +30,16 @@ class Post extends Component {
   }
 
   loadPosts = () => {
-    Promise.all([
-      postServices.getById(this.props.match.params.id),
-      postServices.getScore(this.props.match.params.id)
-    ]).then(result => {
-      this.setState({ ...result[0], score: result[1], loading: false });
-      if (this.props.currentUser.role !== Role.Guest) {
-        postServices.getVote(this.props.match.params.id).then(vote => {
-          this.setState({ vote });
-        });
-      }
+    postServices.getById(this.props.match.params.id).then(post => {
+      const currentUserVote = post.PostVotes.find(
+        vote => vote.userId === this.props.currentUser.id
+      );
+      const voteIsUp = currentUserVote ? currentUserVote.isUp : null;
+      this.setState({
+        ...post,
+        loading: false,
+        voteIsUp
+      });
     });
   };
 
@@ -54,14 +53,12 @@ class Post extends Component {
 
   handleReaction = isUp => {
     postServices
-      .reaction(this.props.match.params.id, isUp)
+      .postVote(this.props.match.params.id, isUp)
       .then(vote => {
-        this.setState({ vote });
+        this.setState({ voteIsUp: vote.isUp });
       })
       .then(() => {
-        postServices.getScore(this.props.match.params.id).then(score => {
-          this.setState({ score });
-        });
+        this.loadPosts();
       })
       .catch(error => {
         this.props.showMessage("Log in to leave a reaction", "red");
@@ -69,7 +66,7 @@ class Post extends Component {
   };
 
   handleAddReply = body => {
-    replyServices.add(body, this.state.id).then(() => {
+    replyServices.post(body, this.state.id).then(() => {
       this.loadPosts();
     });
   };
@@ -98,10 +95,9 @@ class Post extends Component {
       update,
       createdAt,
       score,
-      vote,
+      voteIsUp,
       loading
     } = this.state;
-
     if (loading) {
       return (
         <div className="text-center">
@@ -130,23 +126,21 @@ class Post extends Component {
             <div>
               <i
                 className={
-                  !vote
-                    ? "far fa-arrow-alt-circle-up"
-                    : vote.isUp
+                  voteIsUp
                     ? "fas fa-arrow-alt-circle-up"
                     : "far fa-arrow-alt-circle-up"
                 }
                 style={{ cursor: "pointer" }}
                 onClick={() => this.handleReaction(true)}
               />
-              <div>{score.upVote - score.downVote}</div>
+              <div>{score}</div>
               <i
                 className={
-                  !vote
+                  voteIsUp
                     ? "far fa-arrow-alt-circle-down"
-                    : vote.isUp
-                    ? "far fa-arrow-alt-circle-down"
-                    : "fas fa-arrow-alt-circle-down"
+                    : voteIsUp === false
+                    ? "fas fa-arrow-alt-circle-down"
+                    : "far fa-arrow-alt-circle-down"
                 }
                 style={{ cursor: "pointer" }}
                 onClick={() => this.handleReaction(false)}

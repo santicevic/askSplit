@@ -57,7 +57,7 @@ class NewPost extends Component {
       return;
     }
 
-    postServices.add({ header, body, tags: selectedTags }).then(post => {
+    postServices.post({ header, body, tags: selectedTags }).then(post => {
       this.props.showMessage("Question posted successfuly");
       this.props.history.push("/");
     });

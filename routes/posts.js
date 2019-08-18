@@ -4,55 +4,28 @@ const User = require("../models").User;
 const Tag = require("../models").Tag;
 const Reply = require("../models").Reply;
 const PostTag = require("../models").PostTag;
-const UserPostVote = require("../models").UserPostVote;
+const PostVote = require("../models").PostVote;
+const ReplyVote = require("../models").ReplyVote;
 const authorizationHelper = require("../helpers/authorizationHelper");
 
 const router = Router();
 
 router.get("/", (req, res) => {
-  Post.findAll({ include: [User, Tag] })
+  Post.findAll({ include: [Tag, User, PostVote] })
     .then(posts => {
       res.status(200).send(posts);
     })
     .catch(error => res.status(400).send());
 });
 
-router.get("/votes/:postId", authorizationHelper.verifyUser, (req, res) => {
-  UserPostVote.findOne({
-    where: { userId: req.data.id, postId: req.params.postId }
-  })
-    .then(vote => {
-      res.status(200).send(vote);
-    })
-    .catch(error => res.status(400).send());
-});
-
-router.get("/scores/:postId", (req, res) => {
-  Promise.all([
-    UserPostVote.count({
-      where: {
-        postId: req.params.postId,
-        isUp: true
-      }
-    }),
-    UserPostVote.count({
-      where: {
-        postId: req.params.postId,
-        isUp: false
-      }
-    })
-  ])
-    .then(votes => {
-      res.status(200).send({ upVote: votes[0], downVote: votes[1] });
-    })
-    .catch(error => {
-      res.status(400).send();
-    });
-});
-
 router.get("/:postId", (req, res) => {
   Post.findByPk(req.params.postId, {
-    include: [Tag, User, { model: Reply, include: User }]
+    include: [
+      Tag,
+      User,
+      { model: Reply, include: [User, ReplyVote] },
+      { model: PostVote, include: [User] }
+    ]
   })
     .then(post => {
       res.status(200).send(post);
@@ -72,7 +45,8 @@ router.post("/", authorizationHelper.verifyUser, (req, res) => {
     user
       .createPost({
         header: req.body.header,
-        body: req.body.body
+        body: req.body.body,
+        score: 0
       })
       .then(post => {
         req.body.tags.forEach(tag => {
@@ -107,9 +81,9 @@ router.patch("/", authorizationHelper.verifyUser, (req, res) => {
       res.status(400).send();
     });
 });
-
-router.post("/reaction", authorizationHelper.verifyUser, (req, res) => {
-  UserPostVote.findOne({
+// ↓ ↓ ↓  Sorry :(  ↓ ↓ ↓
+router.post("/votes", authorizationHelper.verifyUser, (req, res) => {
+  PostVote.findOne({
     where: {
       postId: req.body.postId,
       userId: req.data.id
@@ -117,23 +91,63 @@ router.post("/reaction", authorizationHelper.verifyUser, (req, res) => {
   }).then(userPost => {
     if (userPost) {
       if (userPost.isUp === req.body.isUp) {
-        userPost.destroy().then(() => {
-          res.status(204);
-          res.end();
-        });
+        userPost
+          .destroy()
+          .then(() => {
+            if (req.body.isUp) {
+              return Post.decrement("score", {
+                where: { id: req.body.postId }
+              });
+            } else {
+              return Post.increment("score", {
+                where: { id: req.body.postId }
+              });
+            }
+          })
+          .then(() => {
+            res.status(204);
+            res.end();
+          });
       } else {
         userPost.isUp = !userPost.isUp;
-        userPost.save().then(editedUserPost => {
-          res.status(202).send(editedUserPost);
-        });
+        userPost
+          .save()
+          .then(editedUserPost => {
+            if (editedUserPost.isUp) {
+              return Post.increment("score", {
+                by: 2,
+                where: { id: req.body.postId }
+              });
+            } else {
+              return Post.decrement("score", {
+                by: 2,
+                where: { id: req.body.postId }
+              });
+            }
+          })
+          .then(() => {
+            res.status(202).send();
+          });
       }
     } else {
-      UserPostVote.create({
+      PostVote.create({
         ...req.body,
         userId: req.data.id
-      }).then(userPostVote => {
-        res.status(201).send(userPostVote);
-      });
+      })
+        .then(postVote => {
+          if (req.body.isUp) {
+            return Post.increment("score", {
+              where: { id: req.body.postId }
+            });
+          } else {
+            return Post.decrement("score", {
+              where: { id: req.body.postId }
+            });
+          }
+        })
+        .then(() => {
+          res.status(201).send();
+        });
     }
   });
 });

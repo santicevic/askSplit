@@ -4,11 +4,9 @@ import { authHeader } from "../utils/authHeader";
 export const postServices = {
   getAll,
   getById,
-  add,
+  post,
   update,
-  reaction,
-  getScore,
-  getVote
+  postVote
 };
 
 function getAll() {
@@ -37,7 +35,7 @@ function getById(postId) {
     });
 }
 
-function add(post) {
+function post(post) {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeader() },
@@ -65,46 +63,14 @@ function update(post) {
     });
 }
 
-function getVote(postId) {
-  const requestOptions = {
-    method: "GET",
-    headers: { "Content-Type": "application/json", ...authHeader() }
-  };
-
-  return fetch(
-    "http://localhost:8000/api/posts/votes/" + postId,
-    requestOptions
-  )
-    .then(handleResponse)
-    .catch(error => {
-      throw error;
-    });
-}
-
-function reaction(postId, isUp) {
+function postVote(postId, isUp) {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeader() },
     body: JSON.stringify({ postId, isUp })
   };
 
-  return fetch("http://localhost:8000/api/posts/reaction", requestOptions)
-    .then(handleResponse)
-    .catch(error => {
-      throw error;
-    });
-}
-
-function getScore(postId) {
-  const requestOptions = {
-    method: "GET",
-    headers: { "Content-Type": "application/json" }
-  };
-
-  return fetch(
-    "http://localhost:8000/api/posts/scores/" + postId,
-    requestOptions
-  )
+  return fetch("http://localhost:8000/api/posts/votes", requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;

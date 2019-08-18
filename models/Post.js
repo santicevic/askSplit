@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false
       },
+      score: {
+        type: DataTypes.INTEGER,
+        default: 0
+      },
       update: DataTypes.STRING
     },
     {}
@@ -18,12 +22,8 @@ module.exports = (sequelize, DataTypes) => {
   Post.associate = function(models) {
     // associations can be defined here
     Post.belongsTo(models.User, { foreignKey: "userId" });
+    Post.hasMany(models.PostVote, { foreignKey: "postId" });
     Post.hasMany(models.Reply, { foreignKey: "postId" });
-    Post.belongsToMany(models.User, {
-      through: models.UserPostVote,
-      foreignKey: "postId",
-      otherKey: "userId"
-    });
     Post.belongsToMany(models.Tag, {
       through: models.PostTag,
       foreignKey: "postId",
