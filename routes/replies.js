@@ -2,6 +2,7 @@ const Router = require("express").Router;
 const Reply = require("../models").Reply;
 const User = require("../models").User;
 const ReplyVote = require("../models").ReplyVote;
+const ReplyComment = require("../models").ReplyComment;
 const authorizationHelper = require("../helpers/authorizationHelper");
 
 const router = Router();
@@ -92,7 +93,9 @@ router.post("/votes", authorizationHelper.verifyUser, (req, res) => {
 });
 
 router.get("/:replyId", (req, res) => {
-  Reply.findByPk(req.params.replyId, { include: [User, ReplyVote] })
+  Reply.findByPk(req.params.replyId, {
+    include: [User, ReplyVote, { model: ReplyComment, include: [User] }]
+  })
     .then(reply => {
       res.status(200).send(reply);
     })

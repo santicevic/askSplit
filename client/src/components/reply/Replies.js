@@ -56,7 +56,7 @@ class Replies extends Component {
           />
         </Collapse>
         <Button onClick={this.handleClick} className="m-2">
-          Reply
+          <i className="fas fa-comment-dots" />
         </Button>
       </>
     );

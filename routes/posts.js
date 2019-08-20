@@ -6,6 +6,7 @@ const Reply = require("../models").Reply;
 const PostTag = require("../models").PostTag;
 const PostVote = require("../models").PostVote;
 const ReplyVote = require("../models").ReplyVote;
+const ReplyComment = require("../models").ReplyComment;
 const authorizationHelper = require("../helpers/authorizationHelper");
 
 const router = Router();
@@ -23,7 +24,10 @@ router.get("/:postId", (req, res) => {
     include: [
       Tag,
       User,
-      { model: Reply, include: [User, ReplyVote] },
+      {
+        model: Reply,
+        include: [User, ReplyVote, { model: ReplyComment, include: [User] }]
+      },
       { model: PostVote, include: [User] }
     ]
   })
