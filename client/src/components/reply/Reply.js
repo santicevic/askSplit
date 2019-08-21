@@ -5,6 +5,8 @@ import moment from "moment";
 import { Card, CardBody, CardText, CardFooter } from "reactstrap";
 import { showMessage } from "../../store/actions/messageActions";
 import ReplyComments from "../replyComment";
+import Role from "../../utils/role";
+import { withRouter } from "react-router-dom";
 import { replyCommentServices } from "../../services/replyComments";
 
 class Reply extends Component {
@@ -54,6 +56,20 @@ class Reply extends Component {
     });
   };
 
+  handleCommentRemove = commentId => {
+    replyCommentServices.remove(commentId).then(() => {
+      this.props.showMessage("Comment removed!");
+      this.props.history.push("/");
+    });
+  };
+
+  handleRemove = () => {
+    replyServices.remove(this.state.reply.id).then(() => {
+      this.props.showMessage("Reply removed!");
+      this.props.history.push("/");
+    });
+  };
+
   render() {
     if (this.state.loading) {
       return <></>;
@@ -63,6 +79,13 @@ class Reply extends Component {
     return (
       <Card className="m-2 p-2">
         <h5>{reply.User.username}</h5>
+        {this.props.currentUser.role === Role.Admin && (
+          <i
+            className="far fa-trash-alt text-right"
+            style={{ cursor: "pointer" }}
+            onClick={this.handleRemove}
+          />
+        )}
         <CardBody className="d-flex">
           <div>
             <i
@@ -95,6 +118,7 @@ class Reply extends Component {
         <CardFooter>
           <ReplyComments
             onCommentPost={comment => this.handleCommentPost(comment, reply.id)}
+            onCommentRemove={this.handleCommentRemove}
             replyComments={reply.ReplyComments}
           />
         </CardFooter>
@@ -111,7 +135,9 @@ const mapDispatchToProps = {
   showMessage
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Reply);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Reply)
+);

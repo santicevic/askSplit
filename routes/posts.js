@@ -85,6 +85,16 @@ router.patch("/", authorizationHelper.verifyUser, (req, res) => {
       res.status(400).send();
     });
 });
+
+router.delete("/", authorizationHelper.verifyAdmin, (req, res) => {
+  Post.destroy({ where: { id: req.body.postId } })
+    .then(() => {
+      res.status(204).send();
+    })
+    .catch(error => {
+      res.status(400).send();
+    });
+});
 // ↓ ↓ ↓  Sorry :(  ↓ ↓ ↓
 router.post("/votes", authorizationHelper.verifyUser, (req, res) => {
   PostVote.findOne({

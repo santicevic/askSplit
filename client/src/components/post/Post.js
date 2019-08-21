@@ -18,6 +18,7 @@ import { postServices } from "../../services/posts";
 import moment from "moment";
 import { replyServices } from "../../services/replies";
 import { showMessage } from "../../store/actions/messageActions";
+import Role from "../../utils/role";
 
 class Post extends Component {
   constructor(props) {
@@ -85,6 +86,13 @@ class Post extends Component {
       });
   };
 
+  handleRemove = () => {
+    postServices.remove(this.state.id).then(() => {
+      this.props.showMessage("Post removed!");
+      this.props.history.push("/");
+    });
+  };
+
   render() {
     const {
       Tags,
@@ -110,7 +118,7 @@ class Post extends Component {
       <Card>
         <CardHeader>
           {header}
-          <span style={{ float: "right" }}>
+          <span className="float-right">
             {Tags.map(tag => (
               <Badge key={tag.id} className="ml-1" color="info">
                 {tag.name}
@@ -121,6 +129,13 @@ class Post extends Component {
         <CardBody>
           <CardTitle>
             <h5>{User.username}</h5>
+            {this.props.currentUser.role === Role.Admin && (
+              <i
+                className="far fa-trash-alt float-right"
+                style={{ cursor: "pointer" }}
+                onClick={this.handleRemove}
+              />
+            )}
           </CardTitle>
           <div className="d-flex">
             <div>

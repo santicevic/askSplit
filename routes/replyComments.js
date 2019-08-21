@@ -18,4 +18,14 @@ router.post("/", authorizationHelper.verifyUser, (req, res) => {
     });
 });
 
+router.delete("/", authorizationHelper.verifyAdmin, (req, res) => {
+  ReplyComment.destroy({ where: { id: req.body.commentId } })
+    .then(() => {
+      res.status(204).send();
+    })
+    .catch(error => {
+      res.status(400).send();
+    });
+});
+
 module.exports = router;

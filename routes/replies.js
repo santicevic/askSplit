@@ -23,6 +23,16 @@ router.post("/", authorizationHelper.verifyUser, (req, res) => {
     });
 });
 
+router.delete("/", authorizationHelper.verifyAdmin, (req, res) => {
+  Reply.destroy({ where: { id: req.body.replyId } })
+    .then(() => {
+      res.status(204).send();
+    })
+    .catch(error => {
+      res.status(400).send();
+    });
+});
+
 router.post("/votes", authorizationHelper.verifyUser, (req, res) => {
   ReplyVote.findOne({
     where: {

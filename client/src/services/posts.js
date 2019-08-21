@@ -6,6 +6,7 @@ export const postServices = {
   getById,
   post,
   update,
+  remove,
   postVote
 };
 
@@ -54,6 +55,20 @@ function update(post) {
     method: "PATCH",
     headers: { "Content-Type": "application/json", ...authHeader() },
     body: JSON.stringify(post)
+  };
+
+  return fetch("http://localhost:8000/api/posts/", requestOptions)
+    .then(handleResponse)
+    .catch(error => {
+      throw error;
+    });
+}
+
+function remove(postId) {
+  const requestOptions = {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json", ...authHeader() },
+    body: JSON.stringify({ postId })
   };
 
   return fetch("http://localhost:8000/api/posts/", requestOptions)

@@ -4,7 +4,8 @@ import { authHeader } from "../utils/authHeader";
 export const replyServices = {
   post,
   postVote,
-  getById
+  getById,
+  remove
 };
 
 function post(reply, postId) {
@@ -15,6 +16,20 @@ function post(reply, postId) {
   };
 
   return fetch("http://localhost:8000/api/replies", requestOptions)
+    .then(handleResponse)
+    .catch(error => {
+      throw error;
+    });
+}
+
+function remove(replyId) {
+  const requestOptions = {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json", ...authHeader() },
+    body: JSON.stringify({ replyId })
+  };
+
+  return fetch("http://localhost:8000/api/replies/", requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;

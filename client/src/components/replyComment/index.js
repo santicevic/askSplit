@@ -8,7 +8,11 @@ const ReplyComments = props => {
   return (
     <>
       {replyComments.map(replyComment => (
-        <ReplyComment key={replyComment.id} replyComment={replyComment} />
+        <ReplyComment
+          key={replyComment.id}
+          onCommentRemove={props.onCommentRemove}
+          replyComment={replyComment}
+        />
       ))}
       <NewComment onCommentPost={props.onCommentPost} />
     </>
