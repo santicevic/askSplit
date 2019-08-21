@@ -16,7 +16,10 @@ module.exports = (sequelize, DataTypes) => {
     Reply.belongsTo(models.User, { foreignKey: "userId" });
     Reply.belongsTo(models.Post, { foreignKey: "postId" });
     Reply.hasMany(models.ReplyVote, { foreignKey: "replyId" });
-    Reply.hasMany(models.ReplyComment, { foreignKey: "replyId" });
+    Reply.hasMany(models.ReplyComment, {
+      foreignKey: "replyId",
+      onDelete: "cascade"
+    });
   };
   return Reply;
 };

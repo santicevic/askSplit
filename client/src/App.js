@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import { connect } from "react-redux";
 import { Alert } from "reactstrap";
 import Authentication from "./components/authentication";
+import AdminSide from "./components/adminSide";
 import Navbar from "./components/Navbar";
 import Posts from "./components/post";
 import PrivateRoute from "./components/utilComponents/PrivateRoute";
@@ -35,6 +36,12 @@ function App(props) {
               component={Authentication}
             />
             <Route path="/posts" component={Posts} />
+            <PrivateRoute
+              path="/admin"
+              user={props.currentUser}
+              roles={[Role.Admin]}
+              component={AdminSide}
+            />
             <Redirect to="/" />
           </Switch>
         </div>

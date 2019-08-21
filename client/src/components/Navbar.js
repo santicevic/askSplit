@@ -42,6 +42,11 @@ class Navbar extends React.Component {
                   <NavLink>Add post</NavLink>
                 </LinkContainer>
               )}
+              {role === Role.Admin && (
+                <LinkContainer to="/admin/tag">
+                  <NavLink>Add tag</NavLink>
+                </LinkContainer>
+              )}
               {role === Role.Guest ? (
                 <>
                   <LinkContainer to="/authentication/login">

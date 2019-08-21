@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Post.belongsTo(models.User, { foreignKey: "userId" });
     Post.hasMany(models.PostVote, { foreignKey: "postId" });
-    Post.hasMany(models.Reply, { foreignKey: "postId" });
+    Post.hasMany(models.Reply, { foreignKey: "postId", onDelete: "cascade" });
     Post.belongsToMany(models.Tag, {
       through: models.PostTag,
       foreignKey: "postId",
