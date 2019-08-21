@@ -43,7 +43,11 @@ class Replies extends Component {
     return (
       <>
         {this.props.replies.map(reply => (
-          <Reply key={reply.id} reply={reply} />
+          <Reply
+            key={reply.id}
+            reloadPost={this.props.reloadPost}
+            reply={reply}
+          />
         ))}
         <Collapse isOpen={this.state.isOpen}>
           <Input

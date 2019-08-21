@@ -19,6 +19,7 @@ import moment from "moment";
 import { replyServices } from "../../services/replies";
 import { showMessage } from "../../store/actions/messageActions";
 import Role from "../../utils/role";
+import ScoreRate from "../utilComponents/ScoreRate";
 
 class Post extends Component {
   constructor(props) {
@@ -138,29 +139,11 @@ class Post extends Component {
             )}
           </CardTitle>
           <div className="d-flex">
-            <div>
-              <i
-                className={
-                  voteIsUp
-                    ? "fas fa-arrow-alt-circle-up"
-                    : "far fa-arrow-alt-circle-up"
-                }
-                style={{ cursor: "pointer" }}
-                onClick={() => this.handleReaction(true)}
-              />
-              <div>{score}</div>
-              <i
-                className={
-                  voteIsUp
-                    ? "far fa-arrow-alt-circle-down"
-                    : voteIsUp === false
-                    ? "fas fa-arrow-alt-circle-down"
-                    : "far fa-arrow-alt-circle-down"
-                }
-                style={{ cursor: "pointer" }}
-                onClick={() => this.handleReaction(false)}
-              />
-            </div>
+            <ScoreRate
+              onReaction={this.handleReaction}
+              score={score}
+              voteIsUp={voteIsUp}
+            />
             <CardText className="flex-grow-1 m-3">{body}</CardText>
           </div>
           <CardText className="text-right">
@@ -191,6 +174,7 @@ class Post extends Component {
           <RepliesComponent
             replies={Replies}
             onAddReply={this.handleAddReply}
+            reloadPost={this.loadPosts}
           />
         </CardFooter>
       </Card>
