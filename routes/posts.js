@@ -11,8 +11,13 @@ const authorizationHelper = require("../helpers/authorizationHelper");
 
 const router = Router();
 
-router.get("/", (req, res) => {
-  Post.findAll({ include: [Tag, User, PostVote] })
+router.get("/:offset/:limit", (req, res) => {
+  console.log(req.query.tagName);
+  Post.findAll({
+    include: [Tag, User, PostVote],
+    offset: req.params.offset,
+    limit: req.params.limit
+  })
     .then(posts => {
       res.status(200).send(posts);
     })

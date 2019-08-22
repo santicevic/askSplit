@@ -2,7 +2,7 @@ import { handleResponse } from "../utils/handleRespnse";
 import { authHeader } from "../utils/authHeader";
 
 export const postServices = {
-  getAll,
+  get,
   getById,
   post,
   update,
@@ -10,13 +10,18 @@ export const postServices = {
   postVote
 };
 
-function getAll() {
+function get(offset, tagName = "None") {
   const requestOptions = {
     method: "GET",
     headers: { "Content-Type": "application/json" }
   };
 
-  return fetch("http://localhost:8000/api/posts", requestOptions)
+  const NUMBER_OF_RECORS_TO_GET = 4;
+
+  return fetch(
+    `http://localhost:8000/api/posts/${offset}/${NUMBER_OF_RECORS_TO_GET}?tagName=${tagName}`,
+    requestOptions
+  )
     .then(handleResponse)
     .catch(error => {
       throw error;

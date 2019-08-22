@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../styles/Home.css";
+import "../../styles/Home.css";
 import moment from "moment";
 import {
   Badge,
@@ -8,24 +8,41 @@ import {
   CardBody,
   CardTitle,
   CardText,
-  Spinner
+  Spinner,
+  Button
 } from "reactstrap";
-import { postServices } from "../services/posts";
+import { postServices } from "../../services/posts";
+import TagSelect from "./TagSelect";
 
 class Home extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      loading: true
+      loading: true,
+      tagFilter: "None"
     };
   }
 
   componentDidMount() {
-    postServices.getAll().then(posts => {
+    postServices.get(0).then(posts => {
       this.setState({ posts, loading: false });
     });
   }
+
+  handleGetMore = () => {
+    postServices
+      .get(this.state.posts.length, this.state.tagFilter)
+      .then(posts => {
+        this.setState(state => ({ posts: [...state.posts, ...posts] }));
+      });
+  };
+
+  handleTagFilterChange = tagName => {
+    postServices.get(0, tagName).then(posts => {
+      this.setState({ posts, tagFilter: tagName });
+    });
+  };
 
   render() {
     if (this.state.loading) {
@@ -38,6 +55,7 @@ class Home extends Component {
 
     return (
       <>
+        <TagSelect onTagFilterChange={this.handleTagFilterChange} />
         <div className="home-post_container">
           {this.state.posts.map(post => (
             <Card key={post.id} className="home-post_header">
@@ -62,11 +80,15 @@ class Home extends Component {
                 </CardTitle>
                 <CardText>{post.body}</CardText>
                 <span>{moment(post.createdAt).fromNow()}</span>
+                <i className="far fa-star float-right" />
                 <span className="float-right">{post.score}</span>
               </CardBody>
             </Card>
           ))}
         </div>
+        <Button className="w-100" onClick={this.handleGetMore}>
+          Get 4 more
+        </Button>
       </>
     );
   }

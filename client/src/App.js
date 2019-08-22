@@ -2,7 +2,7 @@ import "./styles/Alert.css";
 import React from "react";
 import { Route, Switch, Redirect } from "react-router";
 import { BrowserRouter } from "react-router-dom";
-import Home from "./components/Home";
+import Home from "./components/Home/index";
 import { connect } from "react-redux";
 import { Alert } from "reactstrap";
 import Authentication from "./components/authentication";
