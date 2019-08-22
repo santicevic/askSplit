@@ -61,7 +61,6 @@ class Home extends Component {
             <Card key={post.id} className="home-post_header">
               <CardHeader
                 onClick={() => this.props.history.push(`/posts/${post.id}`)}
-                style={{ cursor: "pointer" }}
               >
                 {post.header}
               </CardHeader>

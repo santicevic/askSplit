@@ -4,6 +4,7 @@ const User = require("../models").User;
 const ReplyVote = require("../models").ReplyVote;
 const ReplyComment = require("../models").ReplyComment;
 const authorizationHelper = require("../helpers/authorizationHelper");
+const voteHelper = require("../helpers/voteHelper");
 
 const router = Router();
 
@@ -16,7 +17,6 @@ router.post("/", authorizationHelper.verifyUser, (req, res) => {
   })
     .then(reply => {
       res.status(201).send(reply);
-      res.end();
     })
     .catch(error => {
       res.status(400).send();
@@ -45,15 +45,8 @@ router.post("/votes", authorizationHelper.verifyUser, (req, res) => {
         userReply
           .destroy()
           .then(() => {
-            if (req.body.isUp) {
-              return Reply.decrement("score", {
-                where: { id: req.body.replyId }
-              });
-            } else {
-              return Reply.increment("score", {
-                where: { id: req.body.replyId }
-              });
-            }
+            const operation = req.body.isUp ? "decrement" : "increment";
+            return voteHelper.updateScore(req.body.replyId, Reply, operation);
           })
           .then(() => {
             res.status(204).send();
@@ -63,17 +56,13 @@ router.post("/votes", authorizationHelper.verifyUser, (req, res) => {
         userReply
           .save()
           .then(editedUserReply => {
-            if (editedUserReply.isUp) {
-              return Reply.increment("score", {
-                by: 2,
-                where: { id: req.body.replyId }
-              });
-            } else {
-              return Reply.decrement("score", {
-                by: 2,
-                where: { id: req.body.replyId }
-              });
-            }
+            const operation = req.body.isUp ? "increment" : "decrement";
+            return voteHelper.updateScore(
+              req.body.replyId,
+              Reply,
+              operation,
+              2
+            );
           })
           .then(() => {
             res.status(202).send();
@@ -85,15 +74,8 @@ router.post("/votes", authorizationHelper.verifyUser, (req, res) => {
         userId: req.data.id
       })
         .then(replyVote => {
-          if (req.body.isUp) {
-            return Reply.increment("score", {
-              where: { id: req.body.replyId }
-            });
-          } else {
-            return Reply.decrement("score", {
-              where: { id: req.body.replyId }
-            });
-          }
+          const operation = req.body.isUp ? "increment" : "decrement";
+          return voteHelper.updateScore(req.body.replyId, Reply, operation);
         })
         .then(() => {
           res.status(201).send();

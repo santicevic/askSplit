@@ -8,13 +8,18 @@ const PostVote = require("../models").PostVote;
 const ReplyVote = require("../models").ReplyVote;
 const ReplyComment = require("../models").ReplyComment;
 const authorizationHelper = require("../helpers/authorizationHelper");
+const voteHelper = require("../helpers/voteHelper");
 
 const router = Router();
 
 router.get("/:offset/:limit", (req, res) => {
-  console.log(req.query.tagName);
+  const tagFilter =
+    req.query.tagName === "None"
+      ? null
+      : { where: { name: req.query.tagName } };
+
   Post.findAll({
-    include: [Tag, User, PostVote],
+    include: [{ model: Tag, ...tagFilter }, User, PostVote],
     offset: req.params.offset,
     limit: req.params.limit
   })
@@ -100,7 +105,7 @@ router.delete("/", authorizationHelper.verifyAdmin, (req, res) => {
       res.status(400).send();
     });
 });
-// ↓ ↓ ↓  Sorry :(  ↓ ↓ ↓
+
 router.post("/votes", authorizationHelper.verifyUser, (req, res) => {
   PostVote.findOne({
     where: {
@@ -113,15 +118,8 @@ router.post("/votes", authorizationHelper.verifyUser, (req, res) => {
         userPost
           .destroy()
           .then(() => {
-            if (req.body.isUp) {
-              return Post.decrement("score", {
-                where: { id: req.body.postId }
-              });
-            } else {
-              return Post.increment("score", {
-                where: { id: req.body.postId }
-              });
-            }
+            const operation = req.body.isUp ? "decrement" : "increment";
+            return voteHelper.updateScore(req.body.postId, Post, operation);
           })
           .then(() => {
             res.status(204);
@@ -132,17 +130,8 @@ router.post("/votes", authorizationHelper.verifyUser, (req, res) => {
         userPost
           .save()
           .then(editedUserPost => {
-            if (editedUserPost.isUp) {
-              return Post.increment("score", {
-                by: 2,
-                where: { id: req.body.postId }
-              });
-            } else {
-              return Post.decrement("score", {
-                by: 2,
-                where: { id: req.body.postId }
-              });
-            }
+            const operation = req.body.isUp ? "increment" : "decrement";
+            return voteHelper.updateScore(req.body.postId, Post, operation, 2);
           })
           .then(() => {
             res.status(202).send();
@@ -154,15 +143,8 @@ router.post("/votes", authorizationHelper.verifyUser, (req, res) => {
         userId: req.data.id
       })
         .then(postVote => {
-          if (req.body.isUp) {
-            return Post.increment("score", {
-              where: { id: req.body.postId }
-            });
-          } else {
-            return Post.decrement("score", {
-              where: { id: req.body.postId }
-            });
-          }
+          const operation = req.body.isUp ? "increment" : "decrement";
+          return voteHelper.updateScore(req.body.postId, Post, operation);
         })
         .then(() => {
           res.status(201).send();
