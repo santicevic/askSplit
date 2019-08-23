@@ -1,6 +1,7 @@
 const Router = require("express").Router;
 const ReplyComment = require("../models").ReplyComment;
 const authorizationHelper = require("../helpers/authorizationHelper");
+const notifications = require("./notifications");
 
 const router = Router();
 
@@ -11,6 +12,7 @@ router.post("/", authorizationHelper.verifyUser, (req, res) => {
     userId: req.data.id
   })
     .then(replyComment => {
+      notifications.createReplyNotification(req.data.id, req.body.replyId);
       res.status(201).send(replyComment);
     })
     .catch(error => {

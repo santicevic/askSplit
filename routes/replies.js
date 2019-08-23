@@ -5,6 +5,7 @@ const ReplyVote = require("../models").ReplyVote;
 const ReplyComment = require("../models").ReplyComment;
 const authorizationHelper = require("../helpers/authorizationHelper");
 const voteHelper = require("../helpers/voteHelper");
+const notifications = require("./notifications");
 
 const router = Router();
 
@@ -16,6 +17,7 @@ router.post("/", authorizationHelper.verifyUser, (req, res) => {
     score: 0
   })
     .then(reply => {
+      notifications.createPostNotification(req.data.id, req.body.postId);
       res.status(201).send(reply);
     })
     .catch(error => {

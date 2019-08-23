@@ -11,6 +11,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { connect } from "react-redux";
 import Role from "../utils/role";
 import { logout } from "../store/actions/authActions";
+import NotificationDropdown from "../components/notificationDropdown";
 
 class Navbar extends React.Component {
   constructor(props) {
@@ -38,9 +39,12 @@ class Navbar extends React.Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               {(role === Role.User || role === Role.Admin) && (
-                <LinkContainer to="/posts">
-                  <NavLink>Add post</NavLink>
-                </LinkContainer>
+                <>
+                  <NotificationDropdown />
+                  <LinkContainer to="/posts">
+                    <NavLink>Add post</NavLink>
+                  </LinkContainer>
+                </>
               )}
               {role === Role.Admin && (
                 <LinkContainer to="/admin/tag">

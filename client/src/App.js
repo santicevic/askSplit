@@ -1,5 +1,5 @@
 import "./styles/Alert.css";
-import React from "react";
+import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import Home from "./components/Home/index";
@@ -11,18 +11,29 @@ import Navbar from "./components/Navbar";
 import Posts from "./components/post";
 import PrivateRoute from "./components/utilComponents/PrivateRoute";
 import Role from "./utils/role";
+import { getNotifications } from "./store/actions/notificationActions";
 
-function App(props) {
-  return (
-    <>
+class App extends Component {
+  componentDidMount() {
+    this.props.getNotifications();
+    this.timer = setInterval(() => this.props.getNotifications(), 30000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    this.timer = null;
+  }
+
+  render() {
+    return (
       <BrowserRouter>
-        {props.message.show && (
+        {this.props.message.show && (
           <Alert
             in={true}
             className="alert-div"
-            style={{ background: props.message.color }}
+            style={{ background: this.props.message.color }}
           >
-            {props.message.msg}
+            {this.props.message.msg}
           </Alert>
         )}
         <Navbar />
@@ -31,14 +42,14 @@ function App(props) {
             <Route exact path="/" component={Home} />
             <PrivateRoute
               path="/authentication"
-              user={props.currentUser}
+              user={this.props.currentUser}
               roles={[Role.Guest]}
               component={Authentication}
             />
             <Route path="/posts" component={Posts} />
             <PrivateRoute
               path="/admin"
-              user={props.currentUser}
+              user={this.props.currentUser}
               roles={[Role.Admin]}
               component={AdminSide}
             />
@@ -46,8 +57,8 @@ function App(props) {
           </Switch>
         </div>
       </BrowserRouter>
-    </>
-  );
+    );
+  }
 }
 
 const mapStateToProps = state => ({
@@ -55,4 +66,11 @@ const mapStateToProps = state => ({
   message: state.message
 });
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = {
+  getNotifications
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

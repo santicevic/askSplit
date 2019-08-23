@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         default: 0
       },
-      update: DataTypes.STRING
+      update: DataTypes.STRING,
+      userId: DataTypes.INTEGER
     },
     {}
   );
@@ -24,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
     Post.belongsTo(models.User, { foreignKey: "userId" });
     Post.hasMany(models.PostVote, { foreignKey: "postId" });
     Post.hasMany(models.Reply, { foreignKey: "postId", onDelete: "cascade" });
+    Post.hasMany(models.Notification, {
+      foreignKey: "postId",
+      onDelete: "cascade"
+    });
     Post.belongsToMany(models.Tag, {
       through: models.PostTag,
       foreignKey: "postId",

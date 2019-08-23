@@ -1,0 +1,5 @@
+export const notificationConstants = {
+  NOTIFICATION_SUCCESS: "NOTIFICATION_SUCCESS",
+  NEW_UNREAD: "NEW_UNREAD",
+  CANCEL_UNREAD: "CANCEL_UNREAD"
+};

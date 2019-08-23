@@ -4,6 +4,7 @@ const posts = require("./posts");
 const replies = require("./replies");
 const tags = require("./tags");
 const replyComments = require("./replyComments");
+const notifications = require("./notifications");
 
 const router = Router();
 
@@ -12,5 +13,6 @@ router.use("/posts", posts);
 router.use("/replies", replies);
 router.use("/tags", tags);
 router.use("/replycomments", replyComments);
+router.use("/notifications", notifications.router);
 
 module.exports = router;
