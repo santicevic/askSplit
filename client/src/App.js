@@ -12,6 +12,7 @@ import Posts from "./components/post";
 import PrivateRoute from "./components/utilComponents/PrivateRoute";
 import Role from "./utils/role";
 import { getNotifications } from "./store/actions/notificationActions";
+import NotFound from "./components/utilComponents/NotFound";
 
 class App extends Component {
   componentDidMount() {
@@ -53,6 +54,7 @@ class App extends Component {
               roles={[Role.Admin]}
               component={AdminSide}
             />
+            <Route path="/404" component={NotFound} />
             <Redirect to="/" />
           </Switch>
         </div>

@@ -1,8 +1,7 @@
 import { notificationConstants } from "../constants/notificationConstants";
 
 let initialState = {
-  notifications: [],
-  unread: false
+  notifications: []
 };
 
 export function notification(state = initialState, action) {
@@ -11,16 +10,6 @@ export function notification(state = initialState, action) {
       return {
         ...state,
         notifications: [...action.notifications]
-      };
-    case notificationConstants.NEW_UNREAD:
-      return {
-        ...state,
-        unread: true
-      };
-    case notificationConstants.CANCEL_UNREAD:
-      return {
-        ...state,
-        unread: false
       };
     default:
       return state;

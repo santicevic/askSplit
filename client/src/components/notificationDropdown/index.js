@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
 import { connect } from "react-redux";
 import Notification from "./Notification";
-import { cancelUnread } from "../../store/actions/notificationActions";
+import { readNotification } from "../../store/actions/notificationActions";
 
 class NotificationDropdown extends Component {
   constructor(props) {
@@ -15,16 +15,18 @@ class NotificationDropdown extends Component {
 
   toggle = () => {
     this.setState(state => ({ open: !state.open }));
-    this.props.cancelUnread();
   };
 
   render() {
+    const hasUnreadNotifications =
+      this.props.notifications.filter(notification => !notification.read)
+        .length > 0;
     return (
       <Dropdown isOpen={this.state.open} toggle={this.toggle}>
         <DropdownToggle>
-          Notifications{" "}
-          {this.props.unread && (
-            <i style={{ color: "red" }} className="far fa-dot-circle" />
+          Notifications
+          {hasUnreadNotifications && (
+            <i className="far fa-dot-circle text-danger m-1" />
           )}
         </DropdownToggle>
         <DropdownMenu
@@ -40,7 +42,11 @@ class NotificationDropdown extends Component {
             <span className="m-1">No notifications</span>
           )}
           {this.props.notifications.map(notification => (
-            <Notification key={notification.id} notification={notification} />
+            <Notification
+              key={notification.id}
+              notification={notification}
+              onClick={() => readNotification(notification)}
+            />
           ))}
         </DropdownMenu>
       </Dropdown>
@@ -49,15 +55,7 @@ class NotificationDropdown extends Component {
 }
 
 const mapStateToProps = state => ({
-  notifications: state.notification.notifications,
-  unread: state.notification.unread
+  notifications: state.notification.notifications
 });
 
-const mapDispatchToProps = {
-  cancelUnread
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NotificationDropdown);
+export default connect(mapStateToProps)(NotificationDropdown);

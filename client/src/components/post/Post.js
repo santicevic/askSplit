@@ -33,6 +33,10 @@ class Post extends Component {
 
   loadPosts = () => {
     postServices.getById(this.props.match.params.id).then(post => {
+      if (!post) {
+        this.props.history.push("/404");
+        return;
+      }
       const currentUserVote = post.PostVotes.find(
         vote => vote.userId === this.props.currentUser.id
       );

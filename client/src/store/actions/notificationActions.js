@@ -2,24 +2,15 @@ import { notificationConstants } from "../constants/notificationConstants";
 import { notificationServices } from "../../services/notifications";
 
 export const getNotifications = () => {
-  return (dispatch, getState) => {
+  return dispatch => {
     notificationServices.get().then(
       notifications => {
-        const sortedByDate = notifications.sort((a, b) =>
+        const notificationsSortedByDate = notifications.sort((a, b) =>
           a.createdAt > b.createdAt ? -1 : a.createdAt < b.createdAt ? 1 : 0
         );
-
-        if (
-          getState().notification.notifications.length < sortedByDate.length
-        ) {
-          dispatch({
-            type: notificationConstants.NEW_UNREAD
-          });
-        }
-
         dispatch({
           type: notificationConstants.NOTIFICATION_SUCCESS,
-          notifications: sortedByDate
+          notifications: notificationsSortedByDate
         });
       },
       error => {
@@ -29,10 +20,8 @@ export const getNotifications = () => {
   };
 };
 
-export const cancelUnread = () => {
-  return dispatch => {
-    dispatch({
-      type: notificationConstants.CANCEL_UNREAD
-    });
-  };
+export const readNotification = notification => {
+  notificationServices.markAsRead(notification).then(() => {
+    getNotifications();
+  });
 };
