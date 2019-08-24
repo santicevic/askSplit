@@ -15,7 +15,10 @@ const Post = props => {
 
   return (
     <Card className="home-post_header">
-      <CardHeader onClick={() => props.history.push(`/posts/${post.id}`)}>
+      <CardHeader
+        className="pointer"
+        onClick={() => props.history.push(`/posts/${post.id}`)}
+      >
         {post.header}
       </CardHeader>
       <CardBody>

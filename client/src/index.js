@@ -1,4 +1,5 @@
 import React from "react";
+import "./styles/Common.css";
 import ReactDOM from "react-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import { Provider } from "react-redux";
