@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 const ReplyComment = props => {
   const { User, body, createdAt, id } = props.replyComment;
   return (
-    <Card>
+    <Card className="m-1 p-1">
       <div className="m-2">
         <span>{User.username}</span>
         {props.currentUser.role === Role.Admin && (

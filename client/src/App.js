@@ -1,4 +1,5 @@
 import "./styles/Alert.css";
+import "./styles/Main.css";
 import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router";
 import { BrowserRouter } from "react-router-dom";
@@ -17,7 +18,7 @@ import NotFound from "./components/utilComponents/NotFound";
 class App extends Component {
   componentDidMount() {
     this.props.getNotifications();
-    this.timer = setInterval(() => this.props.getNotifications(), 30000);
+    this.timer = setInterval(() => this.props.getNotifications(), 5000);
   }
 
   componentWillUnmount() {
@@ -38,7 +39,7 @@ class App extends Component {
           </Alert>
         )}
         <Navbar />
-        <div className="pl-5 pr-5 pt-3 pb-3">
+        <div className="main-content">
           <Switch>
             <Route exact path="/" component={Home} />
             <PrivateRoute

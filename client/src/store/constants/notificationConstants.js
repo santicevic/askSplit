@@ -1,3 +1,3 @@
 export const notificationConstants = {
-  NOTIFICATION_SUCCESS: "NOTIFICATION_SUCCESS"
+  NOTIFICATION_LOAD: "NOTIFICATION_LOAD"
 };

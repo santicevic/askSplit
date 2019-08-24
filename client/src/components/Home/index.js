@@ -1,18 +1,9 @@
 import React, { Component } from "react";
 import "../../styles/Home.css";
-import moment from "moment";
-import {
-  Badge,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  CardText,
-  Spinner,
-  Button
-} from "reactstrap";
+import { Spinner, Button } from "reactstrap";
 import { postServices } from "../../services/posts";
 import TagSelect from "./TagSelect";
+import Post from "./Post";
 
 class Home extends Component {
   constructor(props) {
@@ -58,31 +49,7 @@ class Home extends Component {
         <TagSelect onTagFilterChange={this.handleTagFilterChange} />
         <div className="home-post_container">
           {this.state.posts.map(post => (
-            <Card key={post.id} className="home-post_header">
-              <CardHeader
-                onClick={() => this.props.history.push(`/posts/${post.id}`)}
-              >
-                {post.header}
-              </CardHeader>
-              <CardBody>
-                <CardTitle>
-                  <h4 className="d-inline">User: {post.User.username}</h4>
-                  {post.Tags.map(tag => (
-                    <Badge
-                      className="ml-1 float-right"
-                      key={tag.id}
-                      color="info"
-                    >
-                      {tag.name}
-                    </Badge>
-                  ))}
-                </CardTitle>
-                <CardText>{post.body}</CardText>
-                <span>{moment(post.createdAt).fromNow()}</span>
-                <i className="far fa-star float-right" />
-                <span className="float-right">{post.score}</span>
-              </CardBody>
-            </Card>
+            <Post post={post} key={post.id} />
           ))}
         </div>
         <Button className="w-100" onClick={this.handleGetMore}>

@@ -3,6 +3,7 @@ import { Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
 import { connect } from "react-redux";
 import Notification from "./Notification";
 import { readNotification } from "../../store/actions/notificationActions";
+import "../../styles/Dropdown.css";
 
 class NotificationDropdown extends Component {
   constructor(props) {
@@ -29,15 +30,7 @@ class NotificationDropdown extends Component {
             <i className="far fa-dot-circle text-danger m-1" />
           )}
         </DropdownToggle>
-        <DropdownMenu
-          onClick={this.toggle}
-          style={{
-            height: "auto",
-            maxHeight: "500px",
-            width: "300px",
-            overflowX: "hidden"
-          }}
-        >
+        <DropdownMenu onClick={this.toggle} className="dropdown-menu">
           {this.props.notifications.length === 0 && (
             <span className="m-1">No notifications</span>
           )}

@@ -1,0 +1,12 @@
+.reply-wrapper {
+  background: #a7afab24;
+  margin: 20px;
+  padding: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+  .reply-wrapper {
+    margin: 10px 0;
+    padding: 3px;
+  }
+}

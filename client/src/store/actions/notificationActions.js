@@ -9,7 +9,7 @@ export const getNotifications = () => {
           a.createdAt > b.createdAt ? -1 : a.createdAt < b.createdAt ? 1 : 0
         );
         dispatch({
-          type: notificationConstants.NOTIFICATION_SUCCESS,
+          type: notificationConstants.NOTIFICATION_LOAD,
           notifications: notificationsSortedByDate
         });
       },

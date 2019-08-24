@@ -7,7 +7,6 @@ import {
   CardBody,
   CardTitle,
   CardText,
-  CardFooter,
   Badge,
   Button,
   Collapse,
@@ -37,9 +36,11 @@ class Post extends Component {
         this.props.history.push("/404");
         return;
       }
+
       const currentUserVote = post.PostVotes.find(
         vote => vote.userId === this.props.currentUser.id
       );
+
       const voteIsUp = currentUserVote ? currentUserVote.isUp : null;
       this.setState({
         ...post,
@@ -174,13 +175,13 @@ class Post extends Component {
             )}
           </div>
         </CardBody>
-        <CardFooter>
+        <div>
           <RepliesComponent
             replies={Replies}
             onAddReply={this.handleAddReply}
             reloadPost={this.loadPosts}
           />
-        </CardFooter>
+        </div>
       </Card>
     );
   }

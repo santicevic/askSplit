@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import { replyServices } from "../../services/replies";
 import { connect } from "react-redux";
 import moment from "moment";
-import { Card, CardBody, CardText, CardFooter } from "reactstrap";
+import { Card, CardBody, CardText } from "reactstrap";
 import { showMessage } from "../../store/actions/messageActions";
 import ReplyComments from "../replyComment";
 import Role from "../../utils/role";
 import { withRouter } from "react-router-dom";
 import { replyCommentServices } from "../../services/replyComments";
 import ScoreRate from "../utilComponents/ScoreRate";
+import "../../styles/Reply.css";
 
 class Reply extends Component {
   constructor(props) {
@@ -78,7 +79,7 @@ class Reply extends Component {
 
     const { voteIsUp, reply } = this.state;
     return (
-      <Card className="m-2 p-2">
+      <Card className="reply-wrapper">
         <h5>{reply.User.username}</h5>
         {this.props.currentUser.role === Role.Admin && (
           <i
@@ -98,13 +99,13 @@ class Reply extends Component {
         <CardText className="text-right">
           {moment(reply.createdAt).fromNow()}
         </CardText>
-        <CardFooter>
+        <div>
           <ReplyComments
             onCommentPost={comment => this.handleCommentPost(comment, reply.id)}
             onCommentRemove={this.handleCommentRemove}
             replyComments={reply.ReplyComments}
           />
-        </CardFooter>
+        </div>
       </Card>
     );
   }
