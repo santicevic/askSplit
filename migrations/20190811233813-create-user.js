@@ -23,6 +23,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      userImage: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: "uploads/defaultUser.png"
+      },
       role: {
         allowNull: false,
         type: Sequelize.STRING

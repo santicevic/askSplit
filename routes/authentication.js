@@ -5,9 +5,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models").User;
 const Role = require("../constants/roles");
 
-const saltRounds = 9;
-
 const router = Router();
+const saltRounds = 9;
 
 router.post("/register", (req, res) => {
   if (req.body.password.length < 7) {

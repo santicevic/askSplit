@@ -80,6 +80,11 @@ class Reply extends Component {
     const { voteIsUp, reply } = this.state;
     return (
       <Card className="reply-wrapper">
+        <img
+          src={`http://localhost:8000/${reply.User.userImage}`}
+          alt="Avatar"
+          className="avatar-reply"
+        />
         <h5>{reply.User.username}</h5>
         {this.props.currentUser.role === Role.Admin && (
           <i

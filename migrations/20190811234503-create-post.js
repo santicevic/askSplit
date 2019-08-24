@@ -18,7 +18,7 @@ module.exports = {
       },
       score: {
         type: Sequelize.INTEGER,
-        default: 0
+        defaultValue: 0
       },
       update: {
         type: Sequelize.STRING

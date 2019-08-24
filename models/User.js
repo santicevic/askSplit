@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         validate: { isEmail: true }
       },
+      userImage: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "uploads/defaultUser.png"
+      },
       password: DataTypes.STRING,
       role: DataTypes.STRING
     },

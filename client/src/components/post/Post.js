@@ -134,6 +134,11 @@ class Post extends Component {
         </CardHeader>
         <CardBody>
           <CardTitle>
+            <img
+              src={`http://localhost:8000/${User.userImage}`}
+              alt="Avatar"
+              className="avatar-post"
+            />
             <h5>{User.username}</h5>
             {this.props.currentUser.role === Role.Admin && (
               <i

@@ -23,7 +23,12 @@ const Post = props => {
       </CardHeader>
       <CardBody>
         <CardTitle>
-          <h4 className="d-inline">User: {post.User.username}</h4>
+          <img
+            src={`http://localhost:8000/${post.User.userImage}`}
+            alt="Avatar"
+            className="avatar-home"
+          />
+          <h4 className="d-inline">{post.User.username}</h4>
           {post.Tags.map(tag => (
             <Badge className="ml-1 float-right" key={tag.id} color="info">
               {tag.name}
