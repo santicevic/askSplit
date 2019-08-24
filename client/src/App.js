@@ -1,5 +1,6 @@
 import "./styles/Alert.css";
 import "./styles/Main.css";
+import "./styles/Notification.css";
 import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router";
 import { BrowserRouter } from "react-router-dom";
@@ -14,11 +15,18 @@ import PrivateRoute from "./components/utilComponents/PrivateRoute";
 import Role from "./utils/role";
 import { getNotifications } from "./store/actions/notificationActions";
 import NotFound from "./components/utilComponents/NotFound";
+import Notification from "./components/notificationDropdown/Notification";
+import { readNotification } from "./store/actions/notificationActions";
 
 class App extends Component {
   componentDidMount() {
+    const POLLING_INTERVAL = 30000;
+
     this.props.getNotifications();
-    this.timer = setInterval(() => this.props.getNotifications(), 5000);
+    this.timer = setInterval(
+      () => this.props.getNotifications(),
+      POLLING_INTERVAL
+    );
   }
 
   componentWillUnmount() {
@@ -37,6 +45,17 @@ class App extends Component {
           >
             {this.props.message.msg}
           </Alert>
+        )}
+        {this.props.showNotification && (
+          <div className="notification-popup">
+            {this.props.newNotifications.map(notification => (
+              <Notification
+                key={notification.id}
+                notification={notification}
+                onClick={() => readNotification(notification)}
+              />
+            ))}
+          </div>
         )}
         <Navbar />
         <div className="main-content">
@@ -66,7 +85,9 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   currentUser: state.authentication.user,
-  message: state.message
+  message: state.message,
+  newNotifications: state.notification.newNotifications,
+  showNotification: state.notification.show
 });
 
 const mapDispatchToProps = {
