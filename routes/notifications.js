@@ -24,6 +24,16 @@ router.get("/", authorizationHelper.verifyUser, (req, res) => {
   });
 });
 
+router.patch("/", authorizationHelper.verifyUser, (req, res) => {
+  Notification.update({ read: true }, { where: { id: req.body.id } })
+    .then(() => {
+      res.status(202).send();
+    })
+    .catch(() => {
+      res.status(400).send();
+    });
+});
+
 const createPostNotification = (userId, postId) => {
   Post.findByPk(postId).then(post => {
     if (post.userId !== userId) {

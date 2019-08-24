@@ -18,18 +18,18 @@ module.exports = (sequelize, DataTypes) => {
   Reply.associate = function(models) {
     // associations can be defined here
     Reply.belongsTo(models.User, { foreignKey: "userId" });
-    Reply.belongsTo(models.Post, { foreignKey: "postId" });
+    Reply.belongsTo(models.Post, { foreignKey: "postId", onDelete: "CASCADE" });
     Reply.hasMany(models.ReplyVote, {
       foreignKey: "replyId",
-      onDelete: "cascade"
+      onDelete: "CASCADE"
     });
     Reply.hasMany(models.Notification, {
       foreignKey: "replyId",
-      onDelete: "cascade"
+      onDelete: "CASCADE"
     });
     Reply.hasMany(models.ReplyComment, {
       foreignKey: "replyId",
-      onDelete: "cascade"
+      onDelete: "CASCADE"
     });
   };
   return Reply;

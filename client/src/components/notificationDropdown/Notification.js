@@ -25,12 +25,12 @@ const Notification = props => {
   }
 
   return (
-    <a
-      href={`/posts/${props.notification.Reply.postId}`}
-      style={{ cursor: "pointer" }}
-      onClick={props.onClick}
-    >
-      <Alert color="primary">
+    <Alert color="primary">
+      <a
+        href={`/posts/${props.notification.Reply.postId}`}
+        style={{ cursor: "pointer" }}
+        onClick={props.onClick}
+      >
         <span className="float-right m-1">
           {!props.notification.read && (
             <i className="far fa-dot-circle text-danger" />
@@ -38,9 +38,9 @@ const Notification = props => {
         </span>
         The user <b>{props.notification.User.username}</b> has commented your
         reply <b>{props.notification.Reply.body}</b>
-        <div>{moment(props.notification.createdAt).fromNow()}</div>
-      </Alert>
-    </a>
+      </a>
+      <div>{moment(props.notification.createdAt).fromNow()}</div>
+    </Alert>
   );
 };
 

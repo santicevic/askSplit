@@ -9,8 +9,14 @@ module.exports = (sequelize, DataTypes) => {
   );
   ReplyComment.associate = function(models) {
     // associations can be defined here
-    ReplyComment.belongsTo(models.User, { foreignKey: "userId" });
-    ReplyComment.belongsTo(models.Reply, { foreignKey: "replyId" });
+    ReplyComment.belongsTo(models.User, {
+      foreignKey: "userId",
+      onDelete: "CASCADE"
+    });
+    ReplyComment.belongsTo(models.Reply, {
+      foreignKey: "replyId",
+      onDelete: "CASCADE"
+    });
   };
   return ReplyComment;
 };
