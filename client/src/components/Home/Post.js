@@ -39,9 +39,11 @@ const Post = props => {
           ))}
         </CardTitle>
         <CardText>{post.body}</CardText>
-        <span>{moment(post.createdAt).fromNow()}</span>
-        <i className="far fa-star float-right" />
-        <span className="float-right">{post.score}</span>
+        <div className="home-post_info">
+          <span>{moment(post.createdAt).fromNow()}</span>
+          <span className="float-right">{post.score}</span>
+          <i className="far fa-star float-right" />
+        </div>
       </CardBody>
     </Card>
   );

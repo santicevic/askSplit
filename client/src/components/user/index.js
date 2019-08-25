@@ -3,6 +3,8 @@ import { userServices } from "../../services/users";
 import Details from "./Details";
 import Posts from "./Posts";
 import "../../styles/User.css";
+import { connect } from "react-redux";
+import { Input, FormText } from "reactstrap";
 
 class User extends Component {
   constructor(props) {
@@ -14,14 +16,24 @@ class User extends Component {
     };
   }
 
-  componentDidMount() {
+  loadUser = () => {
     userServices
       .getByUsername(this.props.match.params.username)
       .then(user => {
         this.setState({ loading: false, user });
       })
       .catch(() => this.props.history.push("/404"));
+  };
+
+  componentDidMount() {
+    this.loadUser();
   }
+
+  handleUpload = event => {
+    userServices.uploadImage(event.target.files[0]).then(() => {
+      this.loadUser();
+    });
+  };
 
   render() {
     if (this.state.loading) {
@@ -36,10 +48,21 @@ class User extends Component {
           className="user-picture"
         />
         <Details details={{ username, email, createdAt }} />
+        {username === this.props.currentUser.username && (
+          <>
+            <Input type="file" onChange={this.handleUpload} />
+            <FormText color="muted">Change profile picture</FormText>
+          </>
+        )}
+
         <Posts posts={this.state.user.Posts} />
       </div>
     );
   }
 }
 
-export default User;
+const mapStateToProps = state => ({
+  currentUser: state.authentication.user
+});
+
+export default connect(mapStateToProps)(User);
