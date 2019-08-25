@@ -1,6 +1,6 @@
 ## **AskSplit**
 
-#### Practice app for Extension engine 2019 summer camp task.
+#### Practice app for Extension Engine 2019 summer camp task.
 #### Application insipired by stack overflow to help lost tourists find their way in Croatia.
 
 #### Functionalities:
