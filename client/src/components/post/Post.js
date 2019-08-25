@@ -185,7 +185,9 @@ class Post extends Component {
         </CardBody>
         <div>
           <RepliesComponent
-            replies={Replies}
+            replies={Replies.sort((a, b) =>
+              a.score > b.score ? -1 : a.score < b.score ? 1 : 0
+            )}
             onAddReply={this.handleAddReply}
             reloadPost={this.loadPosts}
           />

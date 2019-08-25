@@ -111,7 +111,9 @@ class Reply extends Component {
           <ReplyComments
             onCommentPost={comment => this.handleCommentPost(comment, reply.id)}
             onCommentRemove={this.handleCommentRemove}
-            replyComments={reply.ReplyComments}
+            replyComments={reply.ReplyComments.sort((a, b) =>
+              a.createdAt > b.createdAt ? -1 : a.createdAt < b.createdAt ? 1 : 0
+            )}
           />
         </div>
       </Card>
