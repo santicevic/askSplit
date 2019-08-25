@@ -17,6 +17,7 @@ import { getNotifications } from "./store/actions/notificationActions";
 import NotFound from "./components/utilComponents/NotFound";
 import Notification from "./components/notificationDropdown/Notification";
 import { readNotification } from "./store/actions/notificationActions";
+import User from "./components/user";
 
 class App extends Component {
   componentDidMount() {
@@ -68,6 +69,7 @@ class App extends Component {
               component={Authentication}
             />
             <Route path="/posts" component={Posts} />
+            <Route path="/users/:username" component={User} />
             <PrivateRoute
               path="/admin"
               user={this.props.currentUser}

@@ -9,6 +9,7 @@ import {
 } from "reactstrap";
 import { withRouter } from "react-router";
 import moment from "moment";
+import { LinkContainer } from "react-router-bootstrap";
 
 const Post = props => {
   const { post } = props;
@@ -23,11 +24,13 @@ const Post = props => {
       </CardHeader>
       <CardBody>
         <CardTitle>
-          <img
-            src={`http://localhost:8000/${post.User.userImage}`}
-            alt="Avatar"
-            className="avatar-home"
-          />
+          <LinkContainer to={`/users/${post.User.username}`}>
+            <img
+              src={`http://localhost:8000/${post.User.userImage}`}
+              alt="Avatar"
+              className="avatar-home pointer"
+            />
+          </LinkContainer>
           <h4 className="d-inline">{post.User.username}</h4>
           {post.Tags.map(tag => (
             <Badge className="ml-1 float-right" key={tag.id} color="info">

@@ -19,6 +19,7 @@ import { replyServices } from "../../services/replies";
 import { showMessage } from "../../store/actions/messageActions";
 import Role from "../../utils/role";
 import ScoreRate from "../utilComponents/ScoreRate";
+import { LinkContainer } from "react-router-bootstrap";
 
 class Post extends Component {
   constructor(props) {
@@ -134,11 +135,13 @@ class Post extends Component {
         </CardHeader>
         <CardBody>
           <CardTitle>
-            <img
-              src={`http://localhost:8000/${User.userImage}`}
-              alt="Avatar"
-              className="avatar-post"
-            />
+            <LinkContainer to={`/users/${User.username}`}>
+              <img
+                src={`http://localhost:8000/${User.userImage}`}
+                alt="Avatar"
+                className="avatar-post pointer"
+              />
+            </LinkContainer>
             <h5>{User.username}</h5>
             {this.props.currentUser.role === Role.Admin && (
               <i

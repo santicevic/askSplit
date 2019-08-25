@@ -41,7 +41,8 @@ router.post("/login", (req, res) => {
             res.status(200).send({
               token,
               role: user.role,
-              id: user.id
+              id: user.id,
+              username: user.username
             });
           });
         } else {

@@ -9,6 +9,7 @@ import Role from "../../utils/role";
 import { withRouter } from "react-router-dom";
 import { replyCommentServices } from "../../services/replyComments";
 import ScoreRate from "../utilComponents/ScoreRate";
+import { LinkContainer } from "react-router-bootstrap";
 import "../../styles/Reply.css";
 
 class Reply extends Component {
@@ -80,11 +81,13 @@ class Reply extends Component {
     const { voteIsUp, reply } = this.state;
     return (
       <Card className="reply-wrapper">
-        <img
-          src={`http://localhost:8000/${reply.User.userImage}`}
-          alt="Avatar"
-          className="avatar-reply"
-        />
+        <LinkContainer to={`/users/${reply.User.username}`}>
+          <img
+            src={`http://localhost:8000/${reply.User.userImage}`}
+            alt="Avatar"
+            className="avatar-reply pointer"
+          />
+        </LinkContainer>
         <h5>{reply.User.username}</h5>
         {this.props.currentUser.role === Role.Admin && (
           <i
