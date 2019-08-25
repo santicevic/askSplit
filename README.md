@@ -1,7 +1,7 @@
 ## **AskSplit**
 
 #### Practice app for Extension engine 2019 summer camp task.
-#### Application insipired by stack overflow to help lost tourists find their way in Croatia. built in react and express 
+#### Application insipired by stack overflow to help lost tourists find their way in Croatia.
 
 #### Functionalities:
 - Registration/login with JWT tokens
