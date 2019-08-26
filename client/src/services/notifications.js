@@ -12,7 +12,7 @@ function get() {
     headers: { "Content-Type": "application/json", ...authHeader() }
   };
 
-  return fetch("http://localhost:8000/api/notifications/", requestOptions)
+  return fetch("/api/notifications/", requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;
@@ -26,7 +26,7 @@ function markAsRead(notification) {
     body: JSON.stringify(notification)
   };
 
-  return fetch("http://localhost:8000/api/notifications/", requestOptions)
+  return fetch("/api/notifications/", requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;

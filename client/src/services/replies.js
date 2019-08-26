@@ -15,7 +15,7 @@ function post(reply, postId) {
     body: JSON.stringify({ reply, postId })
   };
 
-  return fetch("http://localhost:8000/api/replies", requestOptions)
+  return fetch("/api/replies", requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;
@@ -29,7 +29,7 @@ function remove(replyId) {
     body: JSON.stringify({ replyId })
   };
 
-  return fetch("http://localhost:8000/api/replies/", requestOptions)
+  return fetch("/api/replies/", requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;
@@ -43,7 +43,7 @@ function postVote(replyId, isUp) {
     body: JSON.stringify({ replyId, isUp })
   };
 
-  return fetch("http://localhost:8000/api/replies/votes", requestOptions)
+  return fetch("/api/replies/votes", requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;
@@ -56,7 +56,7 @@ function getById(replyId) {
     headers: { "Content-Type": "application/json" }
   };
 
-  return fetch("http://localhost:8000/api/replies/" + replyId, requestOptions)
+  return fetch("/api/replies/" + replyId, requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;

@@ -19,7 +19,7 @@ function get(offset, tagName = "None") {
   const NUMBER_OF_RECORS_TO_GET = 4;
 
   return fetch(
-    `http://localhost:8000/api/posts/${offset}/${NUMBER_OF_RECORS_TO_GET}?tagName=${tagName}`,
+    `/api/posts/${offset}/${NUMBER_OF_RECORS_TO_GET}?tagName=${tagName}`,
     requestOptions
   )
     .then(handleResponse)
@@ -34,7 +34,7 @@ function getById(postId) {
     headers: { "Content-Type": "application/json" }
   };
 
-  return fetch("http://localhost:8000/api/posts/" + postId, requestOptions)
+  return fetch("/api/posts/" + postId, requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;
@@ -48,7 +48,7 @@ function post(post) {
     body: JSON.stringify(post)
   };
 
-  return fetch("http://localhost:8000/api/posts", requestOptions)
+  return fetch("/api/posts", requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;
@@ -62,7 +62,7 @@ function update(post) {
     body: JSON.stringify(post)
   };
 
-  return fetch("http://localhost:8000/api/posts/", requestOptions)
+  return fetch("/api/posts/", requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;
@@ -76,7 +76,7 @@ function remove(postId) {
     body: JSON.stringify({ postId })
   };
 
-  return fetch("http://localhost:8000/api/posts/", requestOptions)
+  return fetch("/api/posts/", requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;
@@ -90,7 +90,7 @@ function postVote(postId, isUp) {
     body: JSON.stringify({ postId, isUp })
   };
 
-  return fetch("http://localhost:8000/api/posts/votes", requestOptions)
+  return fetch("/api/posts/votes", requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;

@@ -13,7 +13,7 @@ function post(replyComment, replyId) {
     body: JSON.stringify({ replyComment, replyId })
   };
 
-  return fetch("http://localhost:8000/api/replycomments", requestOptions)
+  return fetch("/api/replycomments", requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;
@@ -27,7 +27,7 @@ function remove(commentId) {
     body: JSON.stringify({ commentId })
   };
 
-  return fetch("http://localhost:8000/api/replycomments/", requestOptions)
+  return fetch("/api/replycomments/", requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;

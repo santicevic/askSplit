@@ -15,7 +15,7 @@ function login(email, password) {
     body: JSON.stringify({ email, password })
   };
 
-  return fetch("http://localhost:8000/api/authentication/login", requestOptions)
+  return fetch("/api/authentication/login", requestOptions)
     .then(handleResponse)
     .then(user => {
       localStorage.setItem("user", JSON.stringify(user));
@@ -33,10 +33,7 @@ function register(user) {
     body: JSON.stringify(user)
   };
 
-  return fetch(
-    "http://localhost:8000/api/authentication/register",
-    requestOptions
-  )
+  return fetch("/api/authentication/register", requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;
@@ -53,10 +50,7 @@ function usernameExists(username) {
     headers: { "Content-Type": "application/json" }
   };
 
-  return fetch(
-    `http://localhost:8000/api/authentication/usernameexists/${username}`,
-    requestOptions
-  )
+  return fetch(`/api/authentication/usernameexists/${username}`, requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;
@@ -69,10 +63,7 @@ function emailExists(email) {
     headers: { "Content-Type": "application/json" }
   };
 
-  return fetch(
-    `http://localhost:8000/api/authentication/emailexists/${email}`,
-    requestOptions
-  )
+  return fetch(`/api/authentication/emailexists/${email}`, requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;

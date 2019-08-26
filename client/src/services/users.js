@@ -12,7 +12,7 @@ function getByUsername(username) {
     headers: { "Content-Type": "application/json" }
   };
 
-  return fetch("http://localhost:8000/api/users/" + username, requestOptions)
+  return fetch("/api/users/" + username, requestOptions)
     .then(handleResponse)
     .catch(error => {
       throw error;
@@ -29,9 +29,7 @@ function uploadImage(image) {
     headers: { ...authHeader() }
   };
 
-  return fetch("http://localhost:8000/api/uploads/users", requestOptions).catch(
-    error => {
-      throw error;
-    }
-  );
+  return fetch("/api/uploads/users", requestOptions).catch(error => {
+    throw error;
+  });
 }
