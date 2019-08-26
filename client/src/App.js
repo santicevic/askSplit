@@ -15,9 +15,8 @@ import PrivateRoute from "./components/utilComponents/PrivateRoute";
 import Role from "./utils/role";
 import { getNotifications } from "./store/actions/notificationActions";
 import NotFound from "./components/utilComponents/NotFound";
-import Notification from "./components/notificationDropdown/Notification";
-import { readNotification } from "./store/actions/notificationActions";
 import User from "./components/user";
+import NotificationDropdown from "./components/notificationDropdown";
 
 class App extends Component {
   componentDidMount() {
@@ -47,17 +46,7 @@ class App extends Component {
             {this.props.message.msg}
           </Alert>
         )}
-        {this.props.showNotification && (
-          <div className="notification-popup">
-            {this.props.newNotifications.map(notification => (
-              <Notification
-                key={notification.id}
-                notification={notification}
-                onClick={() => readNotification(notification)}
-              />
-            ))}
-          </div>
-        )}
+        <NotificationDropdown />
         <Navbar />
         <div className="main-content">
           <Switch>
@@ -87,9 +76,7 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   currentUser: state.authentication.user,
-  message: state.message,
-  newNotifications: state.notification.newNotifications,
-  showNotification: state.notification.show
+  message: state.message
 });
 
 const mapDispatchToProps = {

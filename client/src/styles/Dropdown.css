@@ -3,8 +3,28 @@
   max-height: 500px;
   width: 300px;
   overflow-x: hidden;
-  border-style: none solid solid solid;
+  border-style: solid;
   border-width: 3px;
   border-color: rgba(53, 48, 48, 0.527);
   margin-top: 10px;
+}
+
+.notification-toggle {
+  border-radius: 50%;
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  z-index: 10;
+  width: 60px;
+  height: 60px;
+  background: #343a40;
+}
+
+@media only screen and (max-width: 600px) {
+  .dropdown-menu {
+    top: initial;
+    bottom: 65px;
+    max-height: 300px;
+    width: 90%;
+  }
 }

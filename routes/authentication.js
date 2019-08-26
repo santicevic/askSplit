@@ -42,7 +42,8 @@ router.post("/login", (req, res) => {
               token,
               role: user.role,
               id: user.id,
-              username: user.username
+              username: user.username,
+              userImage: user.userImage
             });
           });
         } else {
