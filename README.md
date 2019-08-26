@@ -1,6 +1,6 @@
 ## **AskSplit**
 
-#### Practice app for Extension Engine 2019 summer camp task.
+#### Practice app for Extension Engine 2019 summer camp task
 #### Application insipired by stack overflow to help lost tourists find their way in Croatia.
 
 #### Functionalities:
@@ -14,3 +14,10 @@
 - Somewhat responsive
 - User profiles
 
+#### Project setup:
+Open the terminal in project root directory and run the following commands:
+```
+user$ npm install
+user$ npm run client-install
+user$ npm run dev
+```
