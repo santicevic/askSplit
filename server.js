@@ -5,6 +5,7 @@ const path = require("path");
 
 const app = express();
 
+app.use(express.static("client/build"));
 app.use("/uploads", express.static("uploads"));
 app.use(cors());
 
