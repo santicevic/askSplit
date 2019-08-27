@@ -6,6 +6,7 @@ import "../../styles/User.css";
 import { connect } from "react-redux";
 import { Input, FormText } from "reactstrap";
 import { changePicture } from "../../store/actions/authActions";
+import Share from "../utilComponents/Share";
 
 class User extends Component {
   constructor(props) {
@@ -52,8 +53,8 @@ class User extends Component {
             <FormText color="muted">Change profile picture</FormText>
           </>
         )}
-
         <Posts posts={this.state.user.Posts} />
+        <Share />
       </div>
     );
   }

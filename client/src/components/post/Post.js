@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import RepliesComponent from "../reply/Replies";
+import "../../styles/Post.css";
 import {
   Card,
   CardHeader,
@@ -20,6 +21,7 @@ import { showMessage } from "../../store/actions/messageActions";
 import Role from "../../utils/role";
 import ScoreRate from "../utilComponents/ScoreRate";
 import { LinkContainer } from "react-router-bootstrap";
+import Share from "../utilComponents/Share";
 
 class Post extends Component {
   constructor(props) {
@@ -192,6 +194,7 @@ class Post extends Component {
             reloadPost={this.loadPosts}
           />
         </div>
+        <Share />
       </Card>
     );
   }
