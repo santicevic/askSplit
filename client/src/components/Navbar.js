@@ -56,7 +56,7 @@ class Navbar extends React.Component {
                   <UncontrolledDropdown nav inNavbar>
                     <DropdownToggle nav caret>
                       <img
-                        src={`http://localhost:8000/${userImage}`}
+                        src={`/${userImage}`}
                         alt="Avatar"
                         className="avatar-navbar pointer"
                       />

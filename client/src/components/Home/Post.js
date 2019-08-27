@@ -26,7 +26,7 @@ const Post = props => {
         <CardTitle>
           <LinkContainer to={`/users/${post.User.username}`}>
             <img
-              src={`http://localhost:8000/${post.User.userImage}`}
+              src={`/${post.User.userImage}`}
               alt="Avatar"
               className="avatar-home pointer"
             />

@@ -12,7 +12,7 @@ const ReplyComment = props => {
       <div className="m-2">
         <LinkContainer to={`/users/${User.username}`}>
           <img
-            src={`http://localhost:8000/${User.userImage}`}
+            src={`/${User.userImage}`}
             alt="Avatar"
             className="avatar-comment pointer"
           />

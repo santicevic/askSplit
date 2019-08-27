@@ -83,7 +83,7 @@ class Reply extends Component {
       <Card className="reply-wrapper">
         <LinkContainer to={`/users/${reply.User.username}`}>
           <img
-            src={`http://localhost:8000/${reply.User.userImage}`}
+            src={`/${reply.User.userImage}`}
             alt="Avatar"
             className="avatar-reply pointer"
           />

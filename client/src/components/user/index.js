@@ -42,11 +42,7 @@ class User extends Component {
     const { username, userImage, email, createdAt } = this.state.user;
     return (
       <div className="user-wrapper">
-        <img
-          src={`http://localhost:8000/${userImage}`}
-          alt="User"
-          className="user-picture"
-        />
+        <img src={`/${userImage}`} alt="User" className="user-picture" />
         <Details details={{ username, email, createdAt }} />
         {username === this.props.currentUser.username && (
           <>

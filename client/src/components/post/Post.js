@@ -137,7 +137,7 @@ class Post extends Component {
           <CardTitle>
             <LinkContainer to={`/users/${User.username}`}>
               <img
-                src={`http://localhost:8000/${User.userImage}`}
+                src={`/${User.userImage}`}
                 alt="Avatar"
                 className="avatar-post pointer"
               />
