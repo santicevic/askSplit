@@ -13,10 +13,20 @@ module.exports = {
         allowNull: false
       },
       postId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Posts",
+          key: "id"
+        },
+        onDelete: "CASCADE"
       },
       replyId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Replies",
+          key: "id"
+        },
+        onDelete: "CASCADE"
       },
       type: {
         type: Sequelize.STRING,

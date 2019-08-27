@@ -17,7 +17,12 @@ module.exports = {
       },
       replyId: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Replies",
+          key: "id"
+        },
+        onDelete: "CASCADE"
       },
       createdAt: {
         allowNull: false,

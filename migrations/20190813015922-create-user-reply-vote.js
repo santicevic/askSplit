@@ -12,7 +12,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       replyId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Replies",
+          key: "id"
+        },
+        onDelete: "CASCADE"
       },
       isUp: {
         type: Sequelize.BOOLEAN

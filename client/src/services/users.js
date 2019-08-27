@@ -29,7 +29,9 @@ function uploadImage(image) {
     headers: { ...authHeader() }
   };
 
-  return fetch("/api/uploads/users", requestOptions).catch(error => {
-    throw error;
-  });
+  return fetch("/api/uploads/users", requestOptions)
+    .then(handleResponse)
+    .catch(error => {
+      throw error;
+    });
 }

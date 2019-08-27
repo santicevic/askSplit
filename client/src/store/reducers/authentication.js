@@ -44,6 +44,11 @@ export function authentication(state = initialState, action) {
         loggedIn: false,
         user: { role: "Guest", id: 0 }
       };
+    case authConstants.CHANGE_PICTURE:
+      return {
+        ...state,
+        user: { ...state.user, userImage: action.userImage }
+      };
     default:
       return state;
   }

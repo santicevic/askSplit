@@ -5,6 +5,7 @@ import Posts from "./Posts";
 import "../../styles/User.css";
 import { connect } from "react-redux";
 import { Input, FormText } from "reactstrap";
+import { changePicture } from "../../store/actions/authActions";
 
 class User extends Component {
   constructor(props) {
@@ -30,7 +31,8 @@ class User extends Component {
   }
 
   handleUpload = event => {
-    userServices.uploadImage(event.target.files[0]).then(() => {
+    userServices.uploadImage(event.target.files[0]).then(user => {
+      this.props.changePicture(user.userImage);
       this.loadUser();
     });
   };
@@ -61,4 +63,11 @@ const mapStateToProps = state => ({
   currentUser: state.authentication.user
 });
 
-export default connect(mapStateToProps)(User);
+const mapDispatchToProps = {
+  changePicture
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(User);

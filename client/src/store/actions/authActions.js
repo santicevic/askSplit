@@ -29,3 +29,7 @@ export const logout = () => {
   authentication.logout();
   return { type: authConstants.LOGOUT };
 };
+
+export const changePicture = userImage => {
+  return { type: authConstants.CHANGE_PICTURE, userImage };
+};

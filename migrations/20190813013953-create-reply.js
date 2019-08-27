@@ -13,7 +13,12 @@ module.exports = {
       },
       postId: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Posts",
+          key: "id"
+        },
+        onDelete: "CASCADE"
       },
       score: {
         type: Sequelize.INTEGER,

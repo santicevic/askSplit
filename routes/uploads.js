@@ -35,9 +35,12 @@ router.patch(
   authorizationHelper.verifyUser,
   upload.single("userImage"),
   (req, res, next) => {
-    User.update({ userImage: req.file.path }, { where: { id: req.data.id } })
-      .then(() => {
-        res.status(202).send();
+    User.update(
+      { userImage: req.file.path },
+      { where: { id: req.data.id }, returning: true }
+    )
+      .then(response => {
+        res.status(202).send(response[1][0]);
       })
       .catch(error => {
         res.status(400).send();
