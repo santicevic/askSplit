@@ -62,6 +62,11 @@ class Navbar extends React.Component {
                       />
                     </DropdownToggle>
                     <DropdownMenu right>
+                      <LinkContainer
+                        to={`/users/${this.props.currentUser.username}`}
+                      >
+                        <DropdownItem>My profile</DropdownItem>
+                      </LinkContainer>
                       <LinkContainer to="/posts">
                         <DropdownItem>Add post</DropdownItem>
                       </LinkContainer>

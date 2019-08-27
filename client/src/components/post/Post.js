@@ -163,7 +163,7 @@ class Post extends Component {
             {moment(createdAt).fromNow()}
           </CardText>
           <div className="text-right">
-            <CardText className="float-left">
+            <CardText className="text-left">
               {update && !this.state.isUpdateOpen && <>UPDATE: {update}</>}
             </CardText>
             {User.id === this.props.currentUser.id && (

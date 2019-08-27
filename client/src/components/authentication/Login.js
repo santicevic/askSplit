@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import { login } from "../../store/actions/authActions";
+import "../../styles/Form.css";
 
 class Login extends Component {
   constructor(props) {
@@ -29,7 +30,7 @@ class Login extends Component {
   render() {
     const { email, password, invalid } = this.state;
     return (
-      <Form style={{ maxWidth: "300px", margin: "20px auto" }}>
+      <Form className="login-registration-form">
         <FormGroup>
           <Label for="Email">Email</Label>
           <Input

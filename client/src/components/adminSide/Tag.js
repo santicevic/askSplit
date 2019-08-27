@@ -3,6 +3,7 @@ import { Button, Form, FormGroup, Label, Input, Badge } from "reactstrap";
 import { showMessage } from "../../store/actions/messageActions";
 import { tagServices } from "../../services/tags";
 import { connect } from "react-redux";
+import "../../styles/Form.css";
 
 class Tag extends Component {
   constructor(props) {
@@ -46,7 +47,7 @@ class Tag extends Component {
 
   render() {
     return (
-      <Form style={{ maxWidth: "500px", margin: "20px auto" }}>
+      <Form className="tag-form">
         <FormGroup>
           <Label for="Name">Name</Label>
           <Input

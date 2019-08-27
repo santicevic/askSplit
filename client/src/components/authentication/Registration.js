@@ -10,6 +10,7 @@ import {
 } from "reactstrap";
 import { authentication } from "../../services/authentication";
 import { showMessage } from "../../store/actions/messageActions";
+import "../../styles/Form.css";
 
 class Registration extends Component {
   constructor(props) {
@@ -125,7 +126,7 @@ class Registration extends Component {
     } = this.state;
 
     return (
-      <Form style={{ maxWidth: "300px", margin: "20px auto" }}>
+      <Form className="login-registration-form">
         <FormGroup>
           <Label for="Username">Username</Label>
           <Input

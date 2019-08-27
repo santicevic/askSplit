@@ -1,0 +1,15 @@
+.tag-form {
+  max-width: 500px;
+  margin: 20px auto;
+}
+
+.login-registration-form {
+  max-width: 300px;
+  margin: 20px auto;
+}
+
+@media only screen and (max-width: 600px) {
+  .tag-form {
+    margin: 20px;
+  }
+}

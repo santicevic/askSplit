@@ -45,9 +45,11 @@ function handleShowNewNotfications(prevNotifications, newNotifications) {
     return { type: notificationConstants.NOTIFICATION_EMPTY };
   }
 
-  const notificationsToShow = newNotifications.filter(
-    ({ id: id1 }) => !prevNotifications.some(({ id: id2 }) => id2 === id1)
-  );
+  const notificationsToShow = newNotifications
+    .filter(
+      ({ id: id1 }) => !prevNotifications.some(({ id: id2 }) => id2 === id1)
+    )
+    .filter(notification => !notification.read);
 
   if (notificationsToShow.length > 0) {
     return {
