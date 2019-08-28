@@ -13,16 +13,16 @@ const voteHelper = require("../helpers/voteHelper");
 const router = Router();
 
 router.get("/:offset/:limit", (req, res) => {
+  console.log(req.query.tagName);
   const tagFilter =
     req.query.tagName === "None"
       ? null
-      : { where: { name: req.query.tagName } };
+      : { where: { name: req.query.tagName }, include: Tag };
 
   Post.findAll({
-    include: [{ model: Tag, ...tagFilter }, User, PostVote],
     offset: req.params.offset,
     limit: req.params.limit,
-    order: [["createdAt", "DESC"]]
+    ...tagFilter
   })
     .then(posts => {
       res.status(200).send(posts);
