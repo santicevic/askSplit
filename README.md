@@ -16,11 +16,15 @@
 - Profile picture upload and change
 - Somewhat responsive
 - User profiles
+- Post and profile share to twitter, facebook and whatsapp
 
 #### Project setup:
-Open the terminal in project root directory and run the following commands:
-```
-user$ npm install
-user$ npm run client-install
-user$ npm run dev
-```
+1. Setup development database environment in *config/config.json*
+2. Open the terminal in project root directory and run the following commands:
+  ```
+  user$ npm install
+  user$ sequelize db:migrate
+  user$ sequelize db:seed:all
+  user$ npm run client-install
+  user$ npm run dev
+  ```
