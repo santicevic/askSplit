@@ -3,6 +3,9 @@
 #### Practice app for Extension Engine 2019 summer camp task
 #### Application insipired by stack overflow to help lost tourists find their way in Croatia.
 
+### Deployed app
+### >>>https://asksplit.herokuapp.com/<<<
+
 #### Functionalities:
 - Registration/login with JWT tokens
 - Leaving posts, replies to posts and comments on replies
