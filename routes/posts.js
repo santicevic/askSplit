@@ -19,7 +19,7 @@ router.get("/:offset/:limit", (req, res) => {
       : { where: { name: req.query.tagName } };
 
   Post.findAll({
-    include: [{ model: Tag, ...tagFilter }, User, PostVote],
+    include: [{ model: Tag, ...tagFilter }, PostVote, User],
     offset: req.params.offset,
     limit: req.params.limit,
     ...tagFilter
