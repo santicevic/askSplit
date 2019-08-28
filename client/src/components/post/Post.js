@@ -113,7 +113,7 @@ class Post extends Component {
       voteIsUp,
       loading
     } = this.state;
-    console.log(Tags);
+
     if (loading) {
       return (
         <div className="text-center">

@@ -43,7 +43,7 @@ class Home extends Component {
         </div>
       );
     }
-    console.log(this.state.posts);
+
     return (
       <>
         <TagSelect onTagFilterChange={this.handleTagFilterChange} />
