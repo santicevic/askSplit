@@ -9,9 +9,6 @@ import {
   CardTitle,
   CardText,
   Badge,
-  Button,
-  Collapse,
-  Input,
   Spinner
 } from "reactstrap";
 import { postServices } from "../../services/posts";
@@ -22,6 +19,7 @@ import Role from "../../utils/role";
 import ScoreRate from "../utilComponents/ScoreRate";
 import { LinkContainer } from "react-router-bootstrap";
 import Share from "../utilComponents/Share";
+import Update from "./Update";
 
 class Post extends Component {
   constructor(props) {
@@ -115,6 +113,7 @@ class Post extends Component {
       voteIsUp,
       loading
     } = this.state;
+    console.log(Tags);
     if (loading) {
       return (
         <div className="text-center">
@@ -124,7 +123,7 @@ class Post extends Component {
     }
 
     return (
-      <Card>
+      <Card className="post-card">
         <CardHeader>
           {header}
           <span className="float-right">
@@ -169,19 +168,12 @@ class Post extends Component {
               {update && !this.state.isUpdateOpen && <>UPDATE: {update}</>}
             </CardText>
             {User.id === this.props.currentUser.id && (
-              <>
-                <Button onClick={this.handleUpdate}>Update</Button>
-                <Collapse isOpen={this.state.isUpdateOpen}>
-                  <Input
-                    type="textarea"
-                    value={this.state.update || ""}
-                    name="update"
-                    id="Update"
-                    placeholder="Write update!"
-                    onChange={this.handleChange}
-                  />
-                </Collapse>
-              </>
+              <Update
+                onUpdate={this.handleUpdate}
+                onChange={this.handleChange}
+                isOpen={this.state.isUpdateOpen}
+                value={this.state.update}
+              />
             )}
           </div>
         </CardBody>
