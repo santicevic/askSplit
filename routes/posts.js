@@ -21,8 +21,7 @@ router.get("/:offset/:limit", (req, res) => {
   Post.findAll({
     include: [{ model: Tag, ...tagFilter }, PostVote, User],
     offset: req.params.offset,
-    limit: req.params.limit,
-    ...tagFilter
+    limit: req.params.limit
   })
     .then(posts => {
       res.status(200).send(posts);
